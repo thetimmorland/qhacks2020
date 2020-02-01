@@ -81,6 +81,15 @@ def calculateNewMasterRecipe(recipeVariations):
     masterInstructions = getTempAndTime(masterRecipe["instructions"])  # is an array of numbers
     sumOfInstructionVariations = copyArrOfDict(getTempAndTime( masterRecipe["instructions"]))  # is an array of numbers
 
+    numberOfIngredientVariations = []
+    numberOfInstructionVariations = []
+
+    for i in range(len(sumOfIngredientVariations)):
+        numberOfIngredientVariations.append(0)
+    
+    for i in range(len(masterIngredients)):
+        numberOfInstructionVariations.append(0)
+
     # recipeVariations is an array of dictionaries recipeVariations[index][dict][dict]
 
     # get master ingredient list
@@ -115,10 +124,11 @@ def calculateNewMasterRecipe(recipeVariations):
         for num in range(len(ingredients)):
             if ingredients[num]["amount"] != masterIngredients[num]["amount"]:
 
-                variationDelta = ((ingredients[num]["amount"] -
-                                   masterIngredients[num]["amount"]) *
-                                  rating) / (ratingRange * numberOfVariations)
+                #variationDelta = ((ingredients[num]["amount"] - masterIngredients[num]["amount"]) *rating) / (ratingRange * numberOfVariations)
+                variationDelta = ((ingredients[num]["amount"] - masterIngredients[num]["amount"]) * rating)/ratingRange
+                numberOfIngredientVariations[num] += 1
                 sumOfIngredientVariations[num]["amount"] += variationDelta
+                
                 change = True
                 break
 
@@ -126,20 +136,18 @@ def calculateNewMasterRecipe(recipeVariations):
         if not change:
             for index in range(len(instruction)):
                 if instruction[index] != masterInstructions[index]:
-                    variationDelta = (
-                        (instruction[index] - masterInstructions[index]) *
-                        rating) / (5 * numberOfVariations)
+                    #variationDelta = ((instruction[index] - masterInstructions[index]) *rating) / (5 * numberOfVariations)
+                    variationDelta = ((instruction[index] - masterInstructions[index]) * rating) / ratingRange
+                    numberOfInstructionVariations[index] += 1
                     sumOfInstructionVariations[index] += variationDelta
                     break
 
     for instruction in range(len(sumOfInstructionVariations)):
-        masterInstructions[instruction] += sumOfInstructionVariations[
-            instruction]
+        masterInstructions[instruction] += sumOfInstructionVariations[instruction]/numberOfInstructionVariations[instruction]
 
     for ingredient in range(len(sumOfIngredientVariations)):
         # print(masterIngredients[ingredient]["amount"])
-        masterIngredients[ingredient]["amount"] += sumOfIngredientVariations[
-            ingredient]["amount"]
+        masterIngredients[ingredient]["amount"] += sumOfIngredientVariations[ingredient]["amount"]/numberOfIngredientVariations[ingredient]
 
     masterRecipe["instructions"] = editInstructions(
         masterInstructions, masterRecipe["instructions"])
