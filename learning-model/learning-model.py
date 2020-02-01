@@ -132,9 +132,8 @@ def calculateNewMasterRecipe(recipeVariations):
         instruction = getTempAndTime(variation["recipe"]["instructions"])
         change = False
         #print(ingredients)
-        #print(masterIngredients)
-       
-        for num in range(len(ingredients)):
+        # print(masterIngredients)
+        for num in range(len(ingredients)-1):
             if ingredients[num]["amount"] != masterIngredients[num]["amount"]:
 
                 variationDelta = ((ingredients[num]["amount"] - masterIngredients[num]["amount"]) *rating) / (ratingRange * numberOfVariations)
@@ -173,7 +172,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
     recipeIngredients = exampleRecipe["recipe"]["ingredients"]
     recipeInstructions = getTempAndTime(exampleRecipe["recipe"]["instructions"])
     allVariations = []
-
+    allVariations.append(exampleRecipe)
     random.seed()
 
     for i in range(numberOfVariations):
@@ -188,10 +187,8 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
             index = int(random.random() * (len(recipeIngredients)))
             for ingredientIndex in range(len(recipeIngredients)):
                 #count += 1
-                
                 if (ingredientIndex == index):
-                    amountToChange = recipeIngredients[ingredientIndex][
-                        "amount"] * (random.random() * .1 + .95)
+                    amountToChange = recipeIngredients[ingredientIndex]["amount"] * (random.random() * .1 + .95)
                     
                     #temporaryIngredients[ingredientIndex]["amount"] = amountToChange
                     #temporaryIngredients[ingredientIndex]["name"] = recipeIngredients[ingredientIndex]["name"]
@@ -218,7 +215,8 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
                     amountToChange = recipeInstructions[instruction] * (
                         random.random() * .1 + .95)
                     temporaryInstructions[instruction] = amountToChange
-               
+                else:
+                   temporaryInstructions[instruction]=recipeInstructions[instruction]
                 
                     
 
