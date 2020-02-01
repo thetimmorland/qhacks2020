@@ -66,27 +66,23 @@ def getTempAndTime(recipeVar):
     values = []
     for string in recipeVar:
         values += [int(s) for s in string.split() if s.isdigit()]
-        countTime = 0
-        for x in values:
-            temps.append(x)
-            countTime += 1
-    if countTime == 0:
+    if not values:
         temps[0] = -1
-    return temps
+    return values
 
 
 #end getTempAndTime
 
 
 def editInstructions(newTemps, recipeVar):
-    temps = getTempAndTime(recipeVar)
+    oldtemps = getTempAndTime(recipeVar)
     newInstruct = recipeVar.copy()
     count = 0
-    for x in temps:
+    for x in oldtemps:
         for s in range(len(newInstruct)):
             if (newInstruct[s].rpartition(str(x))[1] != ""):
-                textToEdit=newInstruct[s].rpartition(str(temps[count]))
-                newInstruct[s] = textToEdit[0] + str(x) + textToEdit[2]
+                textToEdit=newInstruct[s].rpartition(str(oldtemps[count]))
+                newInstruct[s] = textToEdit[0] + str(newTemps[str(count)]) + textToEdit[2]
                 count += 1
                 break
 
@@ -179,7 +175,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
         temporaryRecipe = {}
         #temporaryRecipe = defaultdict()
         temporaryIngredients = []
-        temporaryInstructions = {}
+        temporaryInstructions = []
         #temporaryInstructions = defaultdict(list)
         #count = 0
         za=random.random()
@@ -210,15 +206,15 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
         else:
             
             index = int(random.random() * len(recipeInstructions))
-            for instruction in range(len(recipeInstructions)):
+            for instruction in range(len(recipeInstructions)-1):
 
                 if instruction == index:
                     print('a')
                     amountToChange = recipeInstructions[instruction] * (
                         random.random() * .1 + .95)
-                    temporaryInstructions[instruction] = amountToChange
+                    temporaryInstructions[instruction].append(amountToChange)
                 else:
-                   temporaryInstructions[instruction]=recipeInstructions[instruction]
+                   temporaryInstructions[instruction].append(recipeInstructions[instruction])
                 
                     
 
