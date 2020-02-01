@@ -117,15 +117,12 @@ def calculateNewMasterRecipe(recipeVariations):
 
         #check if instruction has no numbers, jaspers function will return a -1
         if not change:
+            
             for index in range(len(instructions)):
-            for instruction in instructions:
-             if instructions[instruction] != masterInstructions[instruction]:
-                variationDelta = ((instructions[instruction] - masterIngredients[ingredient])*rating)/(ratingRange*numberOfVariations)
-        for index in range(len(instructions)):
-            if instructions[index] != masterInstructions[index]:
-                variationDelta = ((instructions[index] - masterInstructions[index])*rating)/(5*numberOfVariations)
-                sumOfInstructionVariations[instruction] += variationDelta
-                break
+                if instructions[index] != masterInstructions[index]:
+                    variationDelta = ((instructions[index] - masterInstructions[index])*rating)/(5*numberOfVariations)
+                    sumOfInstructionVariations[instruction] += variationDelta
+                    break
     
 
     for instruction in range(len(sumOfInstructionVariations)):
@@ -147,7 +144,7 @@ def calculateNewMasterRecipe(recipeVariations):
 def createRecipeVariations(exampleRecipe, numberOfVariations):
 
     recipeIngredients = exampleRecipe["ingredients"]
-    recipeInstructions = exampleRecipe["instructions"]
+    recipeInstructions = getTempAndTime(exampleRecipe["instructions"])
 
     random.seed()
 
@@ -155,29 +152,36 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
 
     for i in range(numberOfVariations):
         temporaryRecipe={}
-        temporaryIngredients={}
+        temporaryIngredients=[{}]
         temporaryInstructions={}
         count = 0
-    if(random.random()>0.5):
-        index = random.random()*(len(recipeIngredients)-1)
-        for ingredient in recipeIngredients:
-            count+=1
-            if(count = index)
-                amountToChange = recipeIngredients[ingredient] * (random.random() * .1 + .95)
-                temporaryIngredients[ingredient] = amountToChange
-     else   
-        index = random.random()*len(recipeInstructions)
-        for instruction in recipeInstructions:
-            count+=1
-            if count == index:
-                amountToChange = recipeInstruction[instruction] * (random.rand() * .1 + .95)
-                temporaryInstructions[instruction] = amountToChange
+
+        if(random.random()>0.33):
+            index = random.random()*(len(recipeIngredients)-1)
+            for ingredientIndex in range(len(recipeIngredients)):
+                count+=1
+                if(count = index)
+                    amountToChange = recipeIngredients[ingredientIndex]["amount"] * (random.random() * .1 + .95)
+                    temporaryIngredients[ingredientIndex]["amount"] = amountToChange
+                    temporaryIngredients[ingredientIndex]["name"] = recipeIngredients[ingredientIndex]["name"]
+                    temporaryIngredients[ingredientIndex]["unit"] = recipeIngredients[ingredientIndex]["unit"]
+        else   
+            index = random.random()*len(recipeInstructions)
+            for instruction in range(len(recipeInstructions)):
+                
+                if instruction == index:
+                    amountToChange = recipeInstruction[instruction] * (random.rand() * .1 + .95)
+                    temporaryInstructions[instruction] = amountToChange
         
         temporaryRecipe["ingredients"] = temporaryIngredients
-        temporaryRecipe["instructions"] = temporaryInstructions
+        temporaryRecipe["instructions"] = editInstructions(temporaryInstructions, exampleRecipe["instructions"])
 
         finalObject["recipe"] = temporaryRecipe
         finalObject["rating"] = int((random.random() * 5)) + 1
+
+        allVariations[i] = finalObject
+    
+    return allVariations
 #end createRecipeVariations
 
 
