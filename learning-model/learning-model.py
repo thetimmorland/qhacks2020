@@ -23,7 +23,7 @@ example={
     }
 
 if __name__ == "__main__":
-    recipeVariations = createRecipeVariations(example)
+    recipeVariations = createRecipeVariations(example,100)
     print(calculateNewMasterRecipe(recipeVariations))
     
 
@@ -47,7 +47,7 @@ def getTempAndTime(recipeVar):
         for x in values:
             temps['T'+countTime] = x
             count+=1
-    if count == 0
+    if count == 0:
         temps[0]=-1
     return temps
 #end getTempAndTime
