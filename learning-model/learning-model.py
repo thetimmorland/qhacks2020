@@ -35,6 +35,11 @@ def getTempAndTime(recipeVar):
         values += re.findall(r"[-+]?\d*\.\d+|\d+", string)
     if not values:
         temps[0] = -1
+    for x in range(len(values)):
+        try:
+            values[x]= float(values[x])
+        except:
+            print("error not a float")
     return values
 
 
