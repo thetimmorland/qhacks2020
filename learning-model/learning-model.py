@@ -3,6 +3,7 @@ import requests
 import csv
 import re
 import random
+from collections import defaultdict
 BACKEND_URL = os.environ.get("BACKEND_URL") or "localhost:3000"
 example = {
     "name":
@@ -171,9 +172,11 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
     random.seed()
 
     for i in range(numberOfVariations):
-        temporaryRecipe = {}
+        #temporaryRecipe = {}
+        temporaryRecipe = defaultdict()
         temporaryIngredients = [{}]
-        temporaryInstructions = {}
+        #temporaryInstructions = {}
+        temporaryInstructions = defaultdict()
         count = 0
 
         if (random.random() > 0.33):
@@ -198,8 +201,13 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
                         random.random() * .1 + .95)
                     temporaryInstructions[instruction] = amountToChange
 
-        temporaryRecipe["ingredients"] = temporaryIngredients
-        temporaryRecipe["instructions"] = editInstructions(temporaryInstructions, exampleRecipe["instructions"])
+        #temporaryRecipe["ingredients"] = temporaryIngredients
+        #temporaryRecipe["instructions"] = editInstructions(temporaryInstructions, exampleRecipe["instructions"])
+
+        temporaryRecipe.update({"ingredients" : temporaryIngredients})
+        finalInstructions = editInstructions(temporaryInstructions, exampleRecipe["instructions"])
+        temporaryRecipe.update({"instructions" : finalInstructions})
+
         finalObject = {}
         finalObject["recipe"] = temporaryRecipe
         finalObject["rating"] = int((random.random() * 5)) + 1
