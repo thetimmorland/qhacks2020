@@ -20,17 +20,29 @@ def addRecipe():
 
 def getTempAndTime(recipeVar):
     temps={}
-    str = recipeVar['instructions']
-    values = [int(s) for s in str.split() if s.isdigit()]
-    countTime = 0
-    for x in values:
-        temps['T'+countTime] = x
-        count+=1
+    strings = recipeVar['instructions']
+    values = []
+    for string in strings:
+        values += [int(s) for s in strings.split() if s.isdigit()]
+        countTime = 0
+        for x in values:
+            temps['T'+countTime] = x
+            count+=1
     return temps
 
 def editInstructions(newTemps,recipeVar)
-    for i, recipeVar in enumerate():
-    if c.isdigit():
+    temps=getTempAndTime(recipeVar['instructions'])
+    newInstruct = recipeVar['instructions']
+    count = 0
+    for(x in temp):
+        for s in range(len(newInstruct)):
+            if(newInstruct[s].rpartition(x)[2]!=""):
+                newInstruct[s] = newInstruct[s].rpartition(x)[0]+x+newInstruct[s].rpartition(x)[2]
+                break
+    return newInstruct
+
+
+    
 
 def addVariation():
 
