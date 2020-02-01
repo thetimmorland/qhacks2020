@@ -116,21 +116,20 @@ def calculateNewMasterRecipe(recipeVariations):
 
         #check if instruction has no numbers, jaspers function will return a -1
         if not change:
-            for index in range(len(instructions)):
-            if instructions[index] != masterInstructions[index]:
-
-                variationDelta = ((instructions[index] - masterInstructions[index])*rating)/(5*numberOfVariations)
+            for instruction in instructions:
+             if instructions[instruction] != masterInstructions[instruction]:
+                variationDelta = ((instructions[instruction] - masterIngredients[ingredient])*rating)/(ratingRange*numberOfVariations)
                 sumOfInstructionVariations[instruction] += variationDelta
                 break
     
 
-    for instruction in range(len(sumOfInstructionVariations)):
+    for instruction in sumOfInstructionVariations:
         masterInstructions[instruction] += sumOfInstructionVariations[instruction]
     
-    for ingredient in range(len(sumOfIngredientVariations)):
-        masterIngredients[ingredient]["amount"] += sumOfIngredientVariations[ingredient]["amount"]
+    for ingredient in sumOfIngredientVariations:
+        masterIngredients[ingredient] += sumOfIngredientVariations[ingredient]
 
-    masterRecipe["instructions"] = editInstructions(masterInstructions, masterRecipe["instructions"])
+    masterRecipe["instructions"] = masterInstructions
     masterRecipe["ingredients"] = masterIngredients
 
     return masterRecipe
@@ -162,7 +161,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
                 amountToChange = recipeIngredients[ingredient] * (random.random() * .1 + .95)
                 temporaryIngredients[ingredient] = amountToChange
      else   
-        index = random.random()*len(recipeInstructions)
+        index = random.random()*(len(recipeInstructions)-1)
         for instruction in recipeInstructions:
             count+=1
             if count == index:
