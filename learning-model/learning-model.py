@@ -86,11 +86,11 @@ def calculateNewMasterRecipe(recipeVariations):
 
     #get master ingredient list
 
-    for ingredient in sumOfIngredientVariations:
-        ingredient['amount'] = 0
+    for ingredient in sumOfIngredientVariations:#looping through an array of dict
+        ingredient['amount'] = 0#changing the amount of variation on each ingredient to start at 0
     
-    for instruction in range(len(sumOfInstructionVariations)):
-        sumOfInstructionVariations['instruction'] = 0
+    for instruction in range(len(sumOfInstructionVariations)):#looping through an array of dict
+        sumOfInstructionVariations['instruction'] = 0#changing the amount of variation on each ingredient to start at 0
 
     
     #need to fix first for loop, variation in recipeVariations has issue whether it is the value, or key
