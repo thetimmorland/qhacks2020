@@ -164,19 +164,19 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
     random.seed()
 
     for i in range(numberOfVariations):
-        #temporaryRecipe = {}
-        temporaryRecipe = defaultdict()
-        temporaryIngredients = [{}]
-        #temporaryInstructions = {}
-        temporaryInstructions = defaultdict(list)
-        count = 0
+        temporaryRecipe = {}
+        #temporaryRecipe = defaultdict()
+        temporaryIngredients = []
+        temporaryInstructions = {}
+        #temporaryInstructions = defaultdict(list)
+        #count = 0
 
         if (random.random() > 0.33):
-            index = int(random.random() * (len(recipeIngredients) - 1))
+            index = int(random.random() * (len(recipeIngredients)))
             for ingredientIndex in range(len(recipeIngredients)):
-                count += 1
+                #count += 1
                 
-                if (count == index):
+                if (ingredientIndex == index):
                     amountToChange = recipeIngredients[ingredientIndex][
                         "amount"] * (random.random() * .1 + .95)
                     
@@ -190,6 +190,13 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
 
                             })
                     
+                else:
+                    temporaryIngredients.append({
+                        "amount"    :   recipeIngredients[ingredientIndex]["amount"],
+                        "name"      :   recipeIngredients[ingredientIndex]["name"],
+                        "unit"      :   recipeIngredients[ingredientIndex]["unit"]
+                    })
+                    
         else:
             index = random.random() * len(recipeInstructions)
             for instruction in range(len(recipeInstructions)):
@@ -198,6 +205,8 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
                     amountToChange = recipeInstructions[instruction] * (
                         random.random() * .1 + .95)
                     temporaryInstructions[instruction] = amountToChange
+                else:
+                    
 
         #temporaryRecipe["ingredients"] = temporaryIngredients
         #temporaryRecipe["instructions"] = editInstructions(temporaryInstructions, exampleRecipe["instructions"])
