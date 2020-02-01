@@ -2,6 +2,7 @@ import os
 import requests
 import csv
 import re
+import random
 BACKEND_URL = os.environ.get("BACKEND_URL") | "localhost:3000"
 if __name__ == "__main__":
     
@@ -69,12 +70,13 @@ def calculateNewMasterRecipe(recipeVariations):
         instruction = getTempAndTime(recipeVariation["instructions"])
 
         for ingredient in ingredients:
-            if ingredients[ingredient] != masterIngredients[ingredient]:
+            if ingredients[ingredient]["amount"] != masterIngredients[ingredient]:
 
-                variationDelta = ((ingredients[ingredient] - masterIngredients[ingredient])*rating)/(5*numberOfVariations)
+                variationDelta = ((ingredients[ingredient]["amount"] - masterIngredients[ingredient])*rating)/(5*numberOfVariations)
                 sumOfIngredientVariations[ingredient] += variationDelta
                 break
 
+        #check if instruction has no numbers, jaspers function will return a -1
         for instruction in instructions:
             if instructions[instruction] != masterInstructions[instruction]:
 
@@ -99,7 +101,41 @@ def calculateNewMasterRecipe(recipeVariations):
 
 
 
-def calculateRatingValue()
+def createRecipeVariations(exampleRecipe, numberOfVariations)
+
+    recipeIngredients = exampleRecipe["ingredients"]
+    recipeInstructions = exampleRecipe["instructions"]
+
+    random.seed()
+
+    allVariations[numberOfVariations]
+
+    for i in range(numberOfVariations):
+        temporaryRecipe={}
+        temporaryIngredients={}
+        temporaryInstructions={}
+
+        for ingredient in recipeIngredients:
+            amountToChange = recipeIngredients[ingredient] * (random.random() * .1 + .95)
+            temporaryIngredients[ingredient] = amountToChange
+        
+        for instruction in recipeInstructions:
+            amountToChange = recipeInstruction[instruction] * (random.rand() * .1 + .95)
+            temporaryInstructions[instruction] = amountToChange
+        
+        temporaryRecipe["ingredients"] = temporaryIngredients
+        temporaryRecipe["instructions"] = temporaryInstructions
+
+        finalObject["recipe"] = temporaryRecipe
+        finalObject["rating"] = int((random.random() * 5)) + 1
+
+
+
+
+
+
+
+
         
         
 
