@@ -26,6 +26,32 @@ def getTempAndTime(recipeVar):
 def addVariation():
 
 
-def calculateNewMasterRecipe(recipe_variations):
+def calculateNewMasterRecipe(recipeVariations):
+
+    numberOfVariations = recipeVariations.length()
+    master = recipeVariation[0]
+    masterRecipe = master["recipe"]
+    masterIngredients = masterRecipe["ingredients"]
+    sumOfVariations = 0;
+
+    for variation in recipeVariations:
+        recipeVariation = variation["recipe"]
+        ingredients = recipeVariation["ingredients"]
+        rating = variation["score"]
+
+        for ingredient in ingredients:
+            if ingredients[ingredient] != masterIngredients[ingredient]:
+
+                variationDelta = ((ingredients[ingredient] - masterIngredients[ingredient])*rating)/(5*numberOfVariations)
+                sumOfVariations += variationDelta
+                break
     
+    return sumOfVariations
+
+
+
+
+def calculateRatingValue()
+        
+        
 
