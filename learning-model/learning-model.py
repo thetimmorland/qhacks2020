@@ -34,7 +34,7 @@ def addRecipe():
         r=requests.get(BACKEND_URL+ "/api/ratings/"+x)
         master = calculateNewMasterRecipe(r.json())
         requests.post(BACKEND_URL+"/api/ratings/"+x,data = master)
-
+#end addRecipe
 
 def getTempAndTime(recipeVar):
     temps={}
@@ -49,6 +49,7 @@ def getTempAndTime(recipeVar):
         if count == 0
             temps[0]=-1
     return temps
+#end getTempAndTime
 
 def editInstructions(newTemps,recipeVar):
     temps=getTempAndTime(recipeVar['instructions'])
@@ -62,7 +63,7 @@ def editInstructions(newTemps,recipeVar):
                 break
     
     return newInstruct
-
+#end editInstructions
 
     
 
@@ -128,7 +129,7 @@ def calculateNewMasterRecipe(recipeVariations):
     masterRecipe["ingredients"] = masterIngredients
 
     return masterRecipe
-    
+    #end calculateNewMasterRecipe
 
 
 
@@ -149,7 +150,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
         temporaryInstructions={}
         count = 0
     if(random.random()>0.5):
-        index = random.random()*len(recipeIngredients)
+        index = random.random()*(len(recipeIngredients)-1)
         for ingredient in recipeIngredients:
             count+=1
             if(count  = index)
@@ -168,7 +169,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
 
         finalObject["recipe"] = temporaryRecipe
         finalObject["rating"] = int((random.random() * 5)) + 1
-
+#end createRecipeVariations
 
 
 
