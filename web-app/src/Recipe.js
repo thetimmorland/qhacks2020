@@ -15,7 +15,7 @@ import {
 const PaperList = props =>
     <Paper>
         <Box p={2}>
-            <Typography variant="h5" color="primary" gutterBottom>
+            <Typography color="primary" gutterBottom {...props}>
                 {props.header}
             </Typography>
             <Container maxWidth="md">
@@ -28,6 +28,8 @@ export default function Recipe() {
     let { recipeId } = useParams()
 
     const [recipe, setRecipe] = useState({
+        name: "Cake",
+        notes: "This recipe is very good. I make it all the time with my kids!",
         ingredients: [
             { name: "Eggs", amount: 2, unit: "" },
             { name: "Flour", amount: 2, unit: "Cups" },
@@ -37,7 +39,6 @@ export default function Recipe() {
             "Create well in flour.",
             "Crack egg in well.",
         ],
-        notes: "This recipe is very good. I make it all the time with my kids!"
     })
 
     return (
@@ -45,7 +46,14 @@ export default function Recipe() {
             <Container maxWidth="md">
                 <Grid container direction="column" spacing={2}>
                     <Grid item>
-                        <PaperList header="Ingredients">
+                        <PaperList header={recipe.name} variant="h4">
+                            <Typography>
+                                {recipe.notes}
+                            </Typography>
+                        </PaperList>
+                    </Grid>
+                    <Grid item>
+                        <PaperList header="Ingredients" variant="h6">
                             <Grid container>
                                 {recipe.ingredients.map(ingredient =>
                                     <Grid item xs={12} sm={6}>
@@ -58,7 +66,7 @@ export default function Recipe() {
                         </PaperList>
                     </Grid>
                     <Grid item>
-                        <PaperList header="Instructions">
+                        <PaperList header="Instructions" variant="h6">
                             <ol>
                                 {recipe.instructions.map(instruction =>
                                     <Typography>
