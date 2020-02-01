@@ -72,22 +72,23 @@ def addVariation():
 def calculateNewMasterRecipe(recipeVariations):
 
     numberOfVariations = recipeVariations.length()
-    master = recipeVariation[0]
-    masterRecipe = master["recipe"]
-    masterIngredients = masterRecipe["ingredients"]
-    sumOfIngredientVariations = masterIngredients
+    master = recipeVariations[0]
+    masterRecipe = master["recipe"]     # masterRecipe is of type recipe_t
+    masterIngredients = masterRecipe["ingredients"] # masterIngredients is an array of dictionaries masterIngredients[index][dict]
+    sumOfIngredientVariations = masterIngredients   #  is an array of dictionaries sumOfIngredientVariations[index][dict]
 
-    masterInstructions = getTempAndTime(masterRecipe["instructions"])
-    sumOfInstructionVariations = masterInstructions
+    masterInstructions = getTempAndTime(masterRecipe["instructions"]) # is an array of numbers
+    sumOfInstructionVariations = masterInstructions #is an array of numbers
 
+    #recipeVariations is an array of dictionaries recipeVariations[index][dict][dict]
 
 
     #get master ingredient list
 
     for ingredient in sumOfIngredientVariations:
-        sumOfIngredientVariations[ingredient] = 0
+        ingredient[amount] = 0
     
-    for instruction in sumOfInstructionVariations:
+    for instruction in range(len(sumOfInstructionVariations)):
         sumOfInstructionVariations[instruction] = 0
 
     
@@ -96,11 +97,14 @@ def calculateNewMasterRecipe(recipeVariations):
         
 
 
-        recipeVariation = variation["recipe"]
-        ingredients = recipeVariation["ingredients"]
+        #recipeVariation = variation["recipe"]
+        #ingredients = recipeVariation["ingredients"]
+        #rating = variation["rating"]
+
+        ingredients = variation["recipe"]["ingredients"]
         rating = variation["rating"]
 
-        instruction = getTempAndTime(recipeVariation["instructions"])
+        instruction = getTempAndTime(variation["recipe"]["instructions"])
 
         for ingredient in ingredients:
             if ingredients[ingredient]["amount"] != masterIngredients[ingredient]:
@@ -134,7 +138,7 @@ def calculateNewMasterRecipe(recipeVariations):
 
 
 
-def createRecipeVariations(exampleRecipe, numberOfVariations)
+def createRecipeVariations(exampleRecipe, numberOfVariations):
 
     recipeIngredients = exampleRecipe["ingredients"]
     recipeInstructions = exampleRecipe["instructions"]
