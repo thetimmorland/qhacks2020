@@ -158,7 +158,7 @@ def calculateNewMasterRecipe(recipeVariations):
 
 
 def createRecipeVariations(exampleRecipe, numberOfVariations):
-    changingRange = 0.2
+    changingRange = 0.1
     recipeIngredients = exampleRecipe["recipe"]["ingredients"]
     recipeInstructions = getTempAndTime(
         exampleRecipe["recipe"]["instructions"])
@@ -184,7 +184,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
         for ingredientIndex in range(len(recipeIngredients)):
             #count += 1
             if (ingredientIndex == index):
-                multiple = (random.random() * changingRange - (1-(changingRange/2)))
+                multiple = (random.random() * changingRange + (1-(changingRange/2)))
                 amountToChange = recipeIngredients[ingredientIndex]["amount"] * multiple
                 if multiple<1:
                     ratingChange = -1
@@ -218,7 +218,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
         for instruction in range(len(recipeInstructions)):
 
             if instruction == index:
-                amountToChange = recipeInstructions[instruction] * (random.random()* changingRange - (1-(changingRange/2)))
+                amountToChange = recipeInstructions[instruction] * (random.random()* changingRange + (1-(changingRange/2)))
                 temporaryInstructions.append(amountToChange)
             else:
                 temporaryInstructions.append(recipeInstructions[instruction])
