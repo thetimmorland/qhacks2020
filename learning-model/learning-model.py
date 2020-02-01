@@ -165,7 +165,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
 
     recipeIngredients = exampleRecipe["ingredients"]
     recipeInstructions = getTempAndTime(exampleRecipe["instructions"])
-    allVariations = [numberOfVariations]
+    allVariations = []
 
     random.seed()
 
@@ -210,7 +210,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
         finalObject["recipe"] = temporaryRecipe
         finalObject["rating"] = int((random.random() * 5)) + 1
 
-        allVariations[i] = finalObject
+        allVariations.append(finalObject)
 
     return allVariations
 
