@@ -168,22 +168,28 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
         temporaryRecipe = defaultdict()
         temporaryIngredients = [{}]
         #temporaryInstructions = {}
-        temporaryInstructions = defaultdict()
+        temporaryInstructions = defaultdict(list)
         count = 0
 
         if (random.random() > 0.33):
-            index = random.random() * (len(recipeIngredients) - 1)
+            index = int(random.random() * (len(recipeIngredients) - 1))
             for ingredientIndex in range(len(recipeIngredients)):
                 count += 1
+                
                 if (count == index):
                     amountToChange = recipeIngredients[ingredientIndex][
                         "amount"] * (random.random() * .1 + .95)
-                    temporaryIngredients[ingredientIndex][
-                        "amount"] = amountToChange
-                    temporaryIngredients[ingredientIndex][
-                        "name"] = recipeIngredients[ingredientIndex]["name"]
-                    temporaryIngredients[ingredientIndex][
-                        "unit"] = recipeIngredients[ingredientIndex]["unit"]
+                    
+                    #temporaryIngredients[ingredientIndex]["amount"] = amountToChange
+                    #temporaryIngredients[ingredientIndex]["name"] = recipeIngredients[ingredientIndex]["name"]
+                    #temporaryIngredients[ingredientIndex]["unit"] = recipeIngredients[ingredientIndex]["unit"]
+                    temporaryIngredients.append({
+                            "amount" : amountToChange,
+                            "name"   : recipeIngredients[ingredientIndex]["name"],
+                            "unit"   : recipeIngredients[ingredientIndex]["unit"]
+
+                            })
+                    
         else:
             index = random.random() * len(recipeInstructions)
             for instruction in range(len(recipeInstructions)):
@@ -195,7 +201,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
 
         #temporaryRecipe["ingredients"] = temporaryIngredients
         #temporaryRecipe["instructions"] = editInstructions(temporaryInstructions, exampleRecipe["instructions"])
-
+        #print(temporaryIngredients)
         temporaryRecipe.update({"ingredients" : temporaryIngredients})
         finalInstructions = editInstructions(temporaryInstructions, exampleRecipe["recipe"]["instructions"])
         temporaryRecipe.update({"instructions" : finalInstructions})
@@ -249,5 +255,6 @@ if __name__ == "__main__":
     }
     example = { "recipe": ex, "rating": 5 }
     recipeVariations = createRecipeVariations(example, 100)
-    newRecipe = calculateNewMasterRecipe(recipeVariations)
-    print(newRecipe)
+    print(recipeVariations)
+    #newRecipe = calculateNewMasterRecipe(recipeVariations)
+   # print(newRecipe)
