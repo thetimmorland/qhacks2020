@@ -257,5 +257,6 @@ if __name__ == "__main__":
     recipeVariations = createRecipeVariations(example, 100)
 
     print(calculateNewMasterRecipe(recipeVariations))
+   # print(recipeVariations)
     #newRecipe = calculateNewMasterRecipe(recipeVariations)
    # print(newRecipe)
