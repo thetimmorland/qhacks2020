@@ -78,11 +78,14 @@ def editInstructions(newTemps, recipeVar):
     oldtemps = getTempAndTime(recipeVar)
     newInstruct = recipeVar.copy()
     count = 0
-    for x in oldtemps:
+    if(len(newTemps)!=len(oldtemps)):
+        print("error line 82 newTemps is blank")
+    else:
+     for x in oldtemps:
         for s in range(len(newInstruct)):
             if (newInstruct[s].rpartition(str(x))[1] != ""):
                 textToEdit=newInstruct[s].rpartition(str(oldtemps[count]))
-                newInstruct[s] = textToEdit[0] + str(newTemps[str(count)]) + textToEdit[2]
+                newInstruct[s] = textToEdit[0] + str(newTemps[count]) + textToEdit[2]
                 count += 1
                 break
 
@@ -181,7 +184,9 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
         za=random.random()
         if (za > 0.33):
             index = int(random.random() * (len(recipeIngredients)))
-            for ingredientIndex in range(len(recipeIngredients)):
+        else:
+             index = -1
+        for ingredientIndex in range(len(recipeIngredients)):
                 #count += 1
                 if (ingredientIndex == index):
                     amountToChange = recipeIngredients[ingredientIndex]["amount"] * (random.random() * .1 + .95)
@@ -203,24 +208,19 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
                         "unit"      :   recipeIngredients[ingredientIndex]["unit"]
                     })
                     
-        else:
-            
+        if (za <= 0.33):
             index = int(random.random() * len(recipeInstructions))
-            for instruction in range(len(recipeInstructions)-1):
+        else:
+             index = -1
+        for instruction in range(len(recipeInstructions)):
 
-                if instruction == index:
-                    print('a')
-                    amountToChange = recipeInstructions[instruction] * (
-                        random.random() * .1 + .95)
-                    temporaryInstructions[instruction].append(amountToChange)
-                else:
-                   temporaryInstructions[instruction].append(recipeInstructions[instruction])
-                
-                    
-
-        #temporaryRecipe["ingredients"] = temporaryIngredients
-        #temporaryRecipe["instructions"] = editInstructions(temporaryInstructions, exampleRecipe["instructions"])
-        #print(temporaryIngredients)
+         if instruction == index:
+            print('a')
+            amountToChange = recipeInstructions[instruction] * (random.random() * .1 + .95)
+            temporaryInstructions[instruction].append(amountToChange)
+         else:
+            temporaryInstructions[instruction].append(recipeInstructions[instruction])
+            print("a")
         temporaryRecipe.update({"ingredients" : temporaryIngredients})
         finalInstructions = editInstructions(temporaryInstructions, exampleRecipe["recipe"]["instructions"])
         temporaryRecipe.update({"instructions" : finalInstructions})
