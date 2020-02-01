@@ -55,13 +55,13 @@ def addRecipe():
 
 
 def getTempAndTime(recipeVar):
-    temps = {}
+    temps = []
     values = []
     for string in recipeVar:
         values += [int(s) for s in string.split() if s.isdigit()]
         countTime = 0
         for x in values:
-            temps["T" + str(countTime)] = x
+            temps.append(x)
             countTime += 1
     if countTime == 0:
         temps[0] = -1
@@ -77,9 +77,9 @@ def editInstructions(newTemps, recipeVar):
     count = 0
     for x in temps:
         for s in range(len(newInstruct)):
-            if (newInstruct[s].rpartition(x)[1] != ""):
-                textToEdit=newInstruct[s].rpartition(temps[count])
-                newInstruct[s] = textToEdit[0] + x + textToEdit[2]
+            if (newInstruct[s].rpartition(str(x))[1] != ""):
+                textToEdit=newInstruct[s].rpartition(str(temps[count]))
+                newInstruct.append(textToEdit[0] + str(x) + textToEdit[2])
                 count += 1
                 break
 
@@ -91,7 +91,7 @@ def calculateNewMasterRecipe(recipeVariations):
     ratingRange = 5
     numberOfVariations = len(recipeVariations)
     master = recipeVariations[0]
-    masterRecipe = master["recipe"].copy
+    masterRecipe = master["recipe"]
     masterIngredients = masterRecipe["ingredients"]  #array of dicts
     sumOfIngredientVariations = masterIngredients
 
@@ -106,10 +106,8 @@ def calculateNewMasterRecipe(recipeVariations):
         ingredient[
             'amount'] = 0  #changing the amount of variation on each ingredient to start at 0
 
-    for instruction in range(len(
-            sumOfInstructionVariations)):  #looping through an array of dict
-        sumOfInstructionVariations[
-            'instruction'] = 0  #changing the amount of variation on each ingredient to start at 0
+    for instruction in range(len(sumOfInstructionVariations)):  #looping through an array of dict
+        sumOfInstructionVariations[instruction] = 0  #changing the amount of variation on each ingredient to start at 0
 
     #need to fix first for loop, variation in recipeVariations has issue whether it is the value, or key
     for variation in recipeVariations:
@@ -123,13 +121,11 @@ def calculateNewMasterRecipe(recipeVariations):
 
         instruction = getTempAndTime(variation["recipe"]["instructions"])
         change = False
-        for ingredient in ingredients:
-            if ingredient["amount"] != masterIngredients[ingredient["amount"]]:
+        for num in range(len(ingredients)):
+            if ingredients[num]["amount"] != masterIngredients[num]["amount"]:
 
-                variationDelta = ((ingredients[ingredient]["amount"] -
-                                   masterIngredients[ingredient]) *
-                                  rating) / (ratingRange * numberOfVariations)
-                sumOfIngredientVariations[ingredient] += variationDelta
+                variationDelta = ((ingredients[num]["amount"] - masterIngredients[ingredient]) *rating) / (ratingRange * numberOfVariations)
+                sumOfIngredientVariations[ingredients[num]] += variationDelta
                 change = True
                 break
 
@@ -141,12 +137,11 @@ def calculateNewMasterRecipe(recipeVariations):
                     variationDelta = (
                         (instruction[index] - masterInstructions[index]) *
                         rating) / (5 * numberOfVariations)
-                    sumOfInstructionVariations[instruction] += variationDelta
+                    sumOfInstructionVariations[index] += variationDelta
                     break
 
     for instruction in range(len(sumOfInstructionVariations)):
-        masterInstructions[instruction] += sumOfInstructionVariations[
-            instruction]
+        masterInstructions[instruction] += sumOfInstructionVariations[instruction]
 
     for ingredient in range(len(sumOfIngredientVariations)):
         masterIngredients[ingredient]["amount"] += sumOfIngredientVariations[
