@@ -205,7 +205,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
                     amountToChange = recipeInstructions[instruction] * (
                         random.random() * .1 + .95)
                     temporaryInstructions[instruction] = amountToChange
-                else:
+                
                     
 
         #temporaryRecipe["ingredients"] = temporaryIngredients
