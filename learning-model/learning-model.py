@@ -79,7 +79,7 @@ def editInstructions(newTemps, recipeVar):
         for s in range(len(newInstruct)):
             if (newInstruct[s].rpartition(str(x))[1] != ""):
                 textToEdit=newInstruct[s].rpartition(str(temps[count]))
-                newInstruct.append(textToEdit[0] + str(x) + textToEdit[2])
+                newInstruct[s] = textToEdit[0] + str(x) + textToEdit[2]
                 count += 1
                 break
 
