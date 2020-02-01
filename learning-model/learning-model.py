@@ -56,7 +56,7 @@ def editInstructions(newTemps,recipeVar):
     temps=getTempAndTime(recipeVar['instructions'])
     newInstruct = recipeVar['instructions']
     count = 0
-    for(x in temp):
+    for x in temp:
         for s in range(len(newInstruct)):
             if(newInstruct[s].rpartition(x)[2]!=""):
                 newInstruct[s] = newInstruct[s].rpartition(temps[count])[0]+x+newInstruct[s].rpartition(x)[2]
@@ -66,9 +66,6 @@ def editInstructions(newTemps,recipeVar):
     return newInstruct
 #end editInstructions
 
-    
-
-def addVariation():
 
 
 def calculateNewMasterRecipe(recipeVariations):
@@ -161,12 +158,12 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
             index = random.random()*(len(recipeIngredients)-1)
             for ingredientIndex in range(len(recipeIngredients)):
                 count+=1
-                if(count = index)
+                if(count == index):
                     amountToChange = recipeIngredients[ingredientIndex]["amount"] * (random.random() * .1 + .95)
                     temporaryIngredients[ingredientIndex]["amount"] = amountToChange
                     temporaryIngredients[ingredientIndex]["name"] = recipeIngredients[ingredientIndex]["name"]
                     temporaryIngredients[ingredientIndex]["unit"] = recipeIngredients[ingredientIndex]["unit"]
-        else   
+        else:   
             index = random.random()*len(recipeInstructions)
             for instruction in range(len(recipeInstructions)):
                 
