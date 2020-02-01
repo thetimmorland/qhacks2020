@@ -1,5 +1,5 @@
 import os
-#import requests
+import re
 import csv
 import re
 import random
@@ -30,12 +30,12 @@ if __name__ == "__main__":
     
 
 def addRecipe():
-    r = requests.get(BACKEND_URL+ "/api/recipes")
+    r = re.get(BACKEND_URL+ "/api/recipes")
     recipesID = r.json()
     for x in recipesID:
-        r=requests.get(BACKEND_URL+ "/api/ratings/"+x)
+        r=re.get(BACKEND_URL+ "/api/ratings/"+x)
         master = calculateNewMasterRecipe(r.json())
-        requests.post(BACKEND_URL+"/api/ratings/"+x,data = master)
+        re.post(BACKEND_URL+"/api/ratings/"+x,data = master)
 #end addRecipe
 
 def getTempAndTime(recipeVar):
@@ -53,7 +53,7 @@ def getTempAndTime(recipeVar):
 #end getTempAndTime
 
 def editInstructions(newTemps,recipeVar):
-    temps=getTempAndTime(recipeVar['instructions'])
+    temp=getTempAndTime(recipeVar['instructions'])
     newInstruct = recipeVar['instructions']
     count = 0
     for x in temp:
