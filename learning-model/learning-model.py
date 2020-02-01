@@ -102,9 +102,8 @@ def calculateNewMasterRecipe(recipeVariations):
 
     #get master ingredient list
 
-    for ingredient in sumOfIngredientVariations:  #looping through an array of dict
-        ingredient[
-            'amount'] = 0  #changing the amount of variation on each ingredient to start at 0
+    for ingredientIndex in range(len(sumOfIngredientVariations)):  #looping through an array of dict
+        sumOfIngredientVariations[ingredientIndex]["amount"] = 0  #changing the amount of variation on each ingredient to start at 0
 
     for instruction in range(len(sumOfInstructionVariations)):  #looping through an array of dict
         sumOfInstructionVariations[instruction] = 0  #changing the amount of variation on each ingredient to start at 0
@@ -117,6 +116,7 @@ def calculateNewMasterRecipe(recipeVariations):
         #rating = variation["rating"]
 
         ingredients = variation["recipe"]['ingredients']
+        #print(ingredients)
         rating = variation["rating"]
 
         instruction = getTempAndTime(variation["recipe"]["instructions"])
@@ -124,8 +124,8 @@ def calculateNewMasterRecipe(recipeVariations):
         for num in range(len(ingredients)):
             if ingredients[num]["amount"] != masterIngredients[num]["amount"]:
 
-                variationDelta = ((ingredients[num]["amount"] - masterIngredients[ingredient]) *rating) / (ratingRange * numberOfVariations)
-                sumOfIngredientVariations[ingredients[num]] += variationDelta
+                variationDelta = ((ingredients[num]["amount"] - masterIngredients[num]["amount"]) *rating) / (ratingRange * numberOfVariations)
+                sumOfIngredientVariations[num]["amount"] += variationDelta
                 change = True
                 break
 
@@ -205,7 +205,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
                     amountToChange = recipeInstructions[instruction] * (
                         random.random() * .1 + .95)
                     temporaryInstructions[instruction] = amountToChange
-                else:
+               
                     
 
         #temporaryRecipe["ingredients"] = temporaryIngredients
