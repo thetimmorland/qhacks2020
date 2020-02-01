@@ -19,8 +19,8 @@ namespace RecipesApi.Models
 
         public string Notes { get; set; }
 
-        public Ingredients Ingredients { get; set; }
-
+        //public Ingredients Ingredients { get; set; }
+        public IList<Ingredients> Ingredients { get; set; }
         public int Rating { get; set; }
     }
     public class Ingredients
