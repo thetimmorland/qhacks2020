@@ -17,22 +17,16 @@ rating: { recipe: recipe_t, rating: int_t }
 # Endpoints
 
 ## GET /api/recipes
-Queries db and returns an array of recipe ids, called by web-app
+Queries db and returns an array of recipes, called by web-app
 
 ## POST /api/recipes
 Request body contains recipe object to be stored in db, called by web-app
 
-## GET /api/recipes/{id}
-Queries db and returns a specific recipe object, called by web-app
+## PUT /api/recipes/{recipe}
+Updates a recipe in db, called by learning-model
 
-## PUT /api/recipes/{id}
-Updates a rating in db, called by learning-model
-
-## POST /api/ratings
+## POST /api/ratings/{recipe}
 Request body contains rating object to be stored in db, called by web-app
 
-## GET /api/ratings
-Queries db and returns a list of rating ids, called by learning-model
-
-## GET /api/ratings/{id}
-Queries db and returns a specific rating object, called by learning-model
+## GET /api/ratings/{recipe}
+Queries db and returns a list of ratings for a given recipe, called by learning-model
