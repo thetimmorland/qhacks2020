@@ -77,8 +77,7 @@ def editInstructions(newTemps, recipeVar):
     for x in temps:
         for s in range(len(newInstruct)):
             if (newInstruct[s].rpartition(x)[2] != ""):
-                newInstruct[s] = newInstruct[s].rpartition(
-                    temps[count])[0] + x + newInstruct[s].rpartition(x)[2]
+                newInstruct[s] = newInstruct[s].rpartition(temps[count])[0] + x + newInstruct[s].rpartition(x)[2]
                 count += 1
                 break
 
@@ -200,8 +199,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
                     temporaryInstructions[instruction] = amountToChange
 
         temporaryRecipe["ingredients"] = temporaryIngredients
-        temporaryRecipe["instructions"] = editInstructions(
-            temporaryInstructions, exampleRecipe["instructions"])
+        temporaryRecipe["instructions"] = editInstructions(temporaryInstructions, exampleRecipe["instructions"])
         finalObject = {}
         finalObject["recipe"] = temporaryRecipe
         finalObject["rating"] = int((random.random() * 5)) + 1
