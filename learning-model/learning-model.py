@@ -158,7 +158,7 @@ def calculateNewMasterRecipe(recipeVariations):
 
 
 def createRecipeVariations(exampleRecipe, numberOfVariations):
-    changingRange = 0.1
+    changingRange = 0.2
     recipeIngredients = exampleRecipe["recipe"]["ingredients"]
     recipeInstructions = getTempAndTime(
         exampleRecipe["recipe"]["instructions"])
