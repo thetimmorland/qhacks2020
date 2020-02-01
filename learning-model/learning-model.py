@@ -60,9 +60,9 @@ def getTempAndTime(recipeVar):
         values += [int(s) for s in string.split() if s.isdigit()]
         countTime = 0
         for x in values:
-            temps['T' + countTime] = x
-            count += 1
-    if count == 0:
+            temps["T" + str(countTime)] = x
+            countTime += 1
+    if countTime == 0:
         temps[0] = -1
     return temps
 
@@ -71,8 +71,8 @@ def getTempAndTime(recipeVar):
 
 
 def editInstructions(newTemps, recipeVar):
-    temps = getTempAndTime(recipeVar['instructions'])
-    newInstruct = recipeVar['instructions']
+    temps = getTempAndTime(recipeVar["instructions"])
+    newInstruct = recipeVar["instructions"]
     count = 0
     for x in temps:
         for s in range(len(newInstruct)):
@@ -214,5 +214,40 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
 #end createRecipeVariations
 
 if __name__ == "__main__":
+    example = {
+    "name":
+    "Cake",
+    'notes':
+    "This recipe is very good. I make it all the time with my kids!",
+    'ingredients': [
+        {
+            "name": "Eggs",
+            "amount": 2,
+            "unit": ""
+        },
+        {
+            "name": "Flour",
+            "amount": 2,
+            "unit": "Cups"
+        },
+        {
+            "name": "Sugar",
+            "amount": 2,
+            "unit": "Cups"
+        },
+        {
+            "name": "Baking Soda",
+            "amount": 2,
+            "unit": "Teaspoons"
+        },
+    ],
+    "instructions": [
+        "Add flour.",
+        "Create well in flour.",
+        "Crack egg in well.",
+        "heat oven to 200 C",
+        "cook for 20 min",
+    ],
+    }
     recipeVariations = createRecipeVariations(example, 100)
     print(calculateNewMasterRecipe(recipeVariations))
