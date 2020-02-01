@@ -1,10 +1,11 @@
 import os
 import requests
 import csv
+import re
 BACKEND_URL = os.environ.get("BACKEND_URL") | "localhost:3000"
 if __name__ == "__main__":
     
-    recipes[]
+    
 
     
 
@@ -17,7 +18,19 @@ def addRecipe():
         requests.post(BACKEND_URL+"/api/ratings/"+x,data = master)
 
 
+def getTempAndTime(recipeVar):
+    temps={}
+    str = recipeVar['instructions']
+    values = [int(s) for s in str.split() if s.isdigit()]
+    countTime = 0
+    for x in values:
+        temps['T'+countTime] = x
+        count+=1
+    return temps
 
+def editInstructions(newTemps,recipeVar)
+    for i, recipeVar in enumerate():
+    if c.isdigit():
 
 def addVariation():
 
@@ -25,10 +38,39 @@ def addVariation():
 def calculateNewMasterRecipe(recipeVariations):
 
     numberOfVariations = recipeVariations.length()
-    for variation in recipeVariations:
-        recipeVariation = variation["recipe"]
+    master = recipeVariation[0]
+    masterRecipe = master["recipe"]
+    masterIngredients = masterRecipe["ingredients"]
+    sumOfVariations = masterIngredients
 
-        for ingredient in recipeVariation["ingredients"]:
+    for ingredient in sumOfVariations:
+        sumOfVariations[ingredient] = 0
+    
+
+
+    
+    #need to fix first for loop, variation in recipeVariations has issue whether it is the value, or key
+    for variation in recipeVariations:
+        
+
+
+        recipeVariation = variation["recipe"]
+        ingredients = recipeVariation["ingredients"]
+        rating = variation["score"]
+
+        instruction = getTempAndTime(recipeVariation["instructions"])
+
+        for ingredient in ingredients:
+            if ingredients[ingredient] != masterIngredients[ingredient]:
+
+                variationDelta = ((ingredients[ingredient] - masterIngredients[ingredient])*rating)/(5*numberOfVariations)
+                sumOfVariations[ingredient] += variationDelta
+                break
+
+        for instruction in instructions
+
+    
+
 
 
 
