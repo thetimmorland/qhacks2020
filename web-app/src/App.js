@@ -5,13 +5,14 @@ import {
   Switch,
   Route,
   Link,
-  useParams,
 } from "react-router-dom";
 
 import {
+  CssBaseline,
   Toolbar,
   MenuIcon,
   AppBar,
+  Grid,
   Box,
   Button,
   Typography,
@@ -23,28 +24,34 @@ import Recipe from "./Recipe"
 
 function App() {
   return (
-    <>
+    <Router>
+      <CssBaseline />
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6">
-            Recipe.io
-          </Typography>
+          <Grid container justify="space-between">
+            <Grid item>
+              <Typography variant="h6">Recipe.io</Typography>
+            </Grid>
+            <Grid item>
+              <Link style={{ textDecoration: 'none' }} to="/create">
+                <Button variant="contained">Create</Button>
+              </Link>
+            </Grid>
+          </Grid>
         </Toolbar>
       </AppBar>
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <Catalog />
-          </Route>
-          <Route path="/create">
-            <Editor />
-          </Route>
-          <Route path="/recipe/:recipeId">
-            <Recipe />
-          </Route>
-        </Switch>
-      </Router>
-    </>
+      <Switch>
+        <Route exact path="/">
+          <Catalog />
+        </Route>
+        <Route path="/create">
+          <Editor />
+        </Route>
+        <Route path="/recipe/:recipeId">
+          <Recipe />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 

@@ -1,5 +1,5 @@
 import React from "react";
 
-const Editor = () => {
+export default function Editor() {
     return (<p>Editor</p>)
   }
