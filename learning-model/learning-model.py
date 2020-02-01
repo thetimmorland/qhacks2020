@@ -38,16 +38,15 @@ def addRecipe():
 
 def getTempAndTime(recipeVar):
     temps={}
-    strings = recipeVar['instructions']
     values = []
-    for string in strings:
-        values += [int(s) for s in strings.split() if s.isdigit()]
+    for string in recipeVar:
+        values += [int(s) for s in recipeVar.split() if s.isdigit()]
         countTime = 0
         for x in values:
             temps['T'+countTime] = x
             count+=1
-        if count == 0
-            temps[0]=-1
+    if count == 0
+        temps[0]=-1
     return temps
 #end getTempAndTime
 
@@ -71,7 +70,7 @@ def addVariation():
 
 
 def calculateNewMasterRecipe(recipeVariations):
-
+    ratingRange = 5
     numberOfVariations = len(recipeVariations)
     master = recipeVariation[0]
     masterRecipe = master["recipe"]
@@ -106,19 +105,21 @@ def calculateNewMasterRecipe(recipeVariations):
         rating = variation["rating"]
 
         instruction = getTempAndTime(variation["recipe"]["instructions"])
-
+        change = False
         for ingredient in ingredients:
             if ingredients[ingredient]["amount"] != masterIngredients[ingredient]:
 
-                variationDelta = ((ingredients[ingredient]["amount"] - masterIngredients[ingredient])*rating)/(5*numberOfVariations)
+                variationDelta = ((ingredients[ingredient]["amount"] - masterIngredients[ingredient])*rating)/(ratingRange*numberOfVariations)
                 sumOfIngredientVariations[ingredient] += variationDelta
+                change = true
                 break
 
         #check if instruction has no numbers, jaspers function will return a -1
-        for instruction in instructions:
-            if instructions[instruction] != masterInstructions[instruction]:
+        if not change:
+            for instruction in instructions:
+             if instructions[instruction] != masterInstructions[instruction]:
 
-                variationDelta = ((instructions[instruction] - masterIngredients[ingredient])*rating)/(5*numberOfVariations)
+                variationDelta = ((instructions[instruction] - masterIngredients[ingredient])*rating)/(ratingRange*numberOfVariations)
                 sumOfInstructionVariations[instruction] += variationDelta
                 break
     
