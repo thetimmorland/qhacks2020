@@ -164,7 +164,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
 
     recipeIngredients = exampleRecipe["ingredients"]
     recipeInstructions = getTempAndTime(exampleRecipe["instructions"])
-    allVariations = []
+    allVariations = [numberOfVariations]
 
     random.seed()
 
