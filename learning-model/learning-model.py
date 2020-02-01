@@ -3,7 +3,7 @@ import requests
 import csv
 import re
 import random
-BACKEND_URL = os.environ.get("BACKEND_URL") | "localhost:3000"
+BACKEND_URL = os.environ.get("BACKEND_URL") or "localhost:3000"
 example={
       "name": "Cake",
         'notes': "This recipe is very good. I make it all the time with my kids!",
@@ -42,7 +42,7 @@ def getTempAndTime(recipeVar):
     temps={}
     values = []
     for string in recipeVar:
-        values += [int(s) for s in recipeVar.split() if s.isdigit()]
+        values += [int(s) for s in string.split() if s.isdigit()]
         countTime = 0
         for x in values:
             temps['T'+countTime] = x
@@ -56,7 +56,7 @@ def editInstructions(newTemps,recipeVar):
     temps=getTempAndTime(recipeVar['instructions'])
     newInstruct = recipeVar['instructions']
     count = 0
-    for x in temp:
+    for x in temps:
         for s in range(len(newInstruct)):
             if(newInstruct[s].rpartition(x)[2]!=""):
                 newInstruct[s] = newInstruct[s].rpartition(temps[count])[0]+x+newInstruct[s].rpartition(x)[2]
