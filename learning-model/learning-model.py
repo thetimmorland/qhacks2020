@@ -5,15 +5,15 @@ import re
 import random
 BACKEND_URL = os.environ.get("BACKEND_URL") | "localhost:3000"
 example={
-      name: "Cake",
-        notes: "This recipe is very good. I make it all the time with my kids!",
-        ingredients: [
-            { name: "Eggs", amount: 2, unit: "" },
-            { name: "Flour", amount: 2, unit: "Cups" },
-            { name: "Sugar", amount: 2, unit: "Cups" },
-            { name: "Baking Soda", amount: 2, unit: "Teaspoons" },
+      "name": "Cake",
+        'notes': "This recipe is very good. I make it all the time with my kids!",
+        'ingredients': [
+            { "name": "Eggs", "amount": 2, "unit": "" },
+            { "name": "Flour", "amount": 2, "unit": "Cups" },
+            { "name": "Sugar", "amount": 2, "unit": "Cups" },
+            { "name": "Baking Soda", "amount": 2, "unit": "Teaspoons" },
         ],
-        instructions: [
+        "instructions": [
             "Add flour.",
             "Create well in flour.",
             "Crack egg in well.",
@@ -22,8 +22,9 @@ example={
         ],
     }
 
-#if __name__ == "__main__":
-    recipeVariations = createRecipeVariations()
+if __name__ == "__main__":
+    recipeVariations = createRecipeVariations(example)
+    print(calculateNewMasterRecipe(recipeVariations))
     
 
     
@@ -178,6 +179,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
 
         finalObject["recipe"] = temporaryRecipe
         finalObject["rating"] = int((random.random() * 5)) + 1
+
 #end createRecipeVariations
 
 
