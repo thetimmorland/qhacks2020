@@ -70,7 +70,6 @@ def editInstructions(newTemps, recipeVar):
 def calculateNewMasterRecipe(recipeVariations):
     ratingRange = 5
     numberOfVariations = len(recipeVariations)
-    # print(recipeVariations[0])
     master = recipeVariations[0].copy()
     masterRecipe = master["recipe"].copy()
     masterIngredients = copyArrOfDict(masterRecipe["ingredients"])
@@ -92,7 +91,6 @@ def calculateNewMasterRecipe(recipeVariations):
 
     # get master ingredient list
 
-    # print(masterIngredients)
 
     for ingredientIndex in range(
             len(sumOfIngredientVariations)):  # looping through an array of dict
@@ -107,9 +105,7 @@ def calculateNewMasterRecipe(recipeVariations):
     # need to fix first for loop, variation in recipeVariations has issue whether it is the value, or key
     for variation in recipeVariations:
 
-        #recipeVariation = variation["recipe"]
-        #ingredients = recipeVariation["ingredients"]
-        #rating = variation["rating"]
+   
 
         ingredients = copyArrOfDict(variation["recipe"]['ingredients'])
         # print(ingredients)
@@ -117,8 +113,7 @@ def calculateNewMasterRecipe(recipeVariations):
 
         instruction = getTempAndTime(variation["recipe"]["instructions"])
         change = False
-        # print(ingredients)
-        # print(masterIngredients)
+        
         for num in range(len(ingredients)):
             if ingredients[num]["amount"] != masterIngredients[num]["amount"]:
 
@@ -147,7 +142,6 @@ def calculateNewMasterRecipe(recipeVariations):
             masterInstructions[instruction] += sumOfInstructionVariations[instruction]
 
     for ingredient in range(len(sumOfIngredientVariations)):
-        # print(masterIngredients[ingredient]["amount"])
         masterIngredients[ingredient]["amount"] += sumOfIngredientVariations[ingredient]["amount"]/numberOfIngredientVariations[ingredient]
 
     masterRecipe["instructions"] = editInstructions(
