@@ -1,6 +1,7 @@
 import os
 import requests
 import csv
+import re
 BACKEND_URL = os.environ.get("BACKEND_URL") | "localhost:3000"
 if __name__ == "__main__":
     
@@ -19,9 +20,17 @@ def addRecipe():
 
 def getTempAndTime(recipeVar):
     temps={}
-    str = "h3110 23 cat 444.4 rabbit 11 2 dog"
-    [int(s) for s in str.split() if s.isdigit()]
-    
+    str = recipeVar['instructions']
+    values = [int(s) for s in str.split() if s.isdigit()]
+    countTime = 0
+    for x in values:
+        temps['T'+countTime] = x
+        count+=1
+    return temps
+
+def editInstructions(newTemps,recipeVar)
+    for i, recipeVar in enumerate():
+    if c.isdigit():
 
 def addVariation():
 
@@ -32,7 +41,7 @@ def calculateNewMasterRecipe(recipeVariations):
     master = recipeVariation[0]
     masterRecipe = master["recipe"]
     masterIngredients = masterRecipe["ingredients"]
-    sumOfVariations = 0;
+    sumOfVariations = 0
 
     for variation in recipeVariations:
         recipeVariation = variation["recipe"]
