@@ -91,7 +91,7 @@ def calculateNewMasterRecipe(recipeVariations):
     ratingRange = 5
     numberOfVariations = len(recipeVariations)
     master = recipeVariations[0]
-    masterRecipe = master["recipe"]
+    masterRecipe = master["recipe"].copy
     masterIngredients = masterRecipe["ingredients"]  #array of dicts
     sumOfIngredientVariations = masterIngredients
 
@@ -124,8 +124,7 @@ def calculateNewMasterRecipe(recipeVariations):
         instruction = getTempAndTime(variation["recipe"]["instructions"])
         change = False
         for ingredient in ingredients:
-            if ingredients[ingredient]["amount"] != masterIngredients[
-                    ingredient]:
+            if ingredient["amount"] != masterIngredients[ingredient["amount"]]:
 
                 variationDelta = ((ingredients[ingredient]["amount"] -
                                    masterIngredients[ingredient]) *
