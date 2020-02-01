@@ -118,8 +118,11 @@ def calculateNewMasterRecipe(recipeVariations):
         #check if instruction has no numbers, jaspers function will return a -1
         if not change:
             for index in range(len(instructions)):
+            for instruction in instructions:
+             if instructions[instruction] != masterInstructions[instruction]:
+                variationDelta = ((instructions[instruction] - masterIngredients[ingredient])*rating)/(ratingRange*numberOfVariations)
+        for index in range(len(instructions)):
             if instructions[index] != masterInstructions[index]:
-
                 variationDelta = ((instructions[index] - masterInstructions[index])*rating)/(5*numberOfVariations)
                 sumOfInstructionVariations[instruction] += variationDelta
                 break
