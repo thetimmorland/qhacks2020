@@ -79,7 +79,7 @@ def editInstructions(newTemps, recipeVar):
         for s in range(len(newInstruct)):
             if (newInstruct[s].rpartition(str(x))[1] != ""):
                 textToEdit=newInstruct[s].rpartition(str(temps[count]))
-                newInstruct.append(textToEdit[0] + str(x) + textToEdit[2])
+                newInstruct[s] = textToEdit[0] + str(x) + textToEdit[2]
                 count += 1
                 break
 
@@ -144,8 +144,7 @@ def calculateNewMasterRecipe(recipeVariations):
         masterInstructions[instruction] += sumOfInstructionVariations[instruction]
 
     for ingredient in range(len(sumOfIngredientVariations)):
-        masterIngredients[ingredient]["amount"] += sumOfIngredientVariations[
-            ingredient]["amount"]
+        masterIngredients[ingredient]["amount"] += sumOfIngredientVariations[ingredient]["amount"]
 
     masterRecipe["instructions"] = editInstructions(
         masterInstructions, masterRecipe["instructions"])
@@ -206,6 +205,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
                         random.random() * .1 + .95)
                     temporaryInstructions[instruction] = amountToChange
                
+                
                     
 
         #temporaryRecipe["ingredients"] = temporaryIngredients
