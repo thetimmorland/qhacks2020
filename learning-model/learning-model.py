@@ -6,41 +6,6 @@ import random
 import copy
 from collections import defaultdict
 BACKEND_URL = os.environ.get("BACKEND_URL") or "localhost:3000"
-example = {
-    "name":
-    "Cake",
-    'notes':
-    "This recipe is very good. I make it all the time with my kids!",
-    'ingredients': [
-        {
-            "name": "Eggs",
-            "amount": 2,
-            "unit": ""
-        },
-        {
-            "name": "Flour",
-            "amount": 2,
-            "unit": "Cups"
-        },
-        {
-            "name": "Sugar",
-            "amount": 2,
-            "unit": "Cups"
-        },
-        {
-            "name": "Baking Soda",
-            "amount": 2,
-            "unit": "Teaspoons"
-        },
-    ],
-    "instructions": [
-        "Add flour.",
-        "Create well in flour.",
-        "Crack egg in well.",
-        "heat oven to 200 C",
-        "cook for 20 min",
-    ],
-}
 
 
 def copyArrOfDict(x):
@@ -67,9 +32,14 @@ def getTempAndTime(recipeVar):
     temps = []
     values = []
     for string in recipeVar:
-        values += [int(s) for s in string.split() if s.isdigit()]
+        values += re.findall(r"[-+]?\d*\.\d+|\d+", string)
     if not values:
         temps[0] = -1
+    for x in range(len(values)):
+        try:
+            values[x]= float(values[x])
+        except:
+            print("error not a float")
     return values
 
 
@@ -108,10 +78,8 @@ def calculateNewMasterRecipe(recipeVariations):
     masterIngredients = copyArrOfDict(masterRecipe["ingredients"])
     sumOfIngredientVariations = copyArrOfDict(masterIngredients)
 
-    masterInstructions = getTempAndTime(
-        masterRecipe["instructions"])  # is an array of numbers
-    sumOfInstructionVariations = copyArrOfDict(
-        masterInstructions)  # is an array of numbers
+    masterInstructions = getTempAndTime(masterRecipe["instructions"])  # is an array of numbers
+    sumOfInstructionVariations = copyArrOfDict(getTempAndTime( masterRecipe["instructions"]))  # is an array of numbers
 
     # recipeVariations is an array of dictionaries recipeVariations[index][dict][dict]
 
@@ -144,7 +112,7 @@ def calculateNewMasterRecipe(recipeVariations):
         change = False
         # print(ingredients)
         # print(masterIngredients)
-        for num in range(len(ingredients) - 1):
+        for num in range(len(ingredients)):
             if ingredients[num]["amount"] != masterIngredients[num]["amount"]:
 
                 variationDelta = ((ingredients[num]["amount"] -
@@ -156,8 +124,6 @@ def calculateNewMasterRecipe(recipeVariations):
 
         # check if instruction has no numbers, jaspers function will return a -1
         if not change:
-
-            print(instruction)
             for index in range(len(instruction)):
                 if instruction[index] != masterInstructions[index]:
                     variationDelta = (
@@ -201,14 +167,14 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
         #count = 0
         za = random.random()
         if (za > 0.33):
-            index = int(random.random() * (len(recipeIngredients)))
+            index = random.randint(0,(len(recipeIngredients))-1)
+            print(index)
         else:
             index = -1
         for ingredientIndex in range(len(recipeIngredients)):
             #count += 1
             if (ingredientIndex == index):
-                amountToChange = recipeIngredients[ingredientIndex][
-                    "amount"] * (random.random() * .1 + .95)
+                amountToChange = recipeIngredients[ingredientIndex]["amount"] * (random.random() * .1 + .95)
 
                 #temporaryIngredients[ingredientIndex]["amount"] = amountToChange
                 #temporaryIngredients[ingredientIndex]["name"] = recipeIngredients[ingredientIndex]["name"]
@@ -233,7 +199,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
                 })
 
         if (za <= 0.33):
-            index = int(random.random() * len(recipeInstructions))
+            index = random.randint(0,len(recipeInstructions)-1)
         else:
             index = -1
         for instruction in range(len(recipeInstructions)):
@@ -292,12 +258,12 @@ if __name__ == "__main__":
             "Add flour.",
             "Create well in flour.",
             "Crack egg in well.",
-            "heat oven to 200 C",
-            "cook for 20 min",
+            "heat oven to 200.0 C",
+            "cook for 20.0 min",
         ],
     }
     example = {"recipe": ex, "rating": 5}
-    recipeVariations = createRecipeVariations(example, 100)
+    recipeVariations = createRecipeVariations(example, 1000)
 
     newRecipe = calculateNewMasterRecipe(recipeVariations)
     print(calculateNewMasterRecipe(recipeVariations))
