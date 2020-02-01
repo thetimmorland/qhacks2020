@@ -72,18 +72,16 @@ def getTempAndTime(recipeVar):
 
 def editInstructions(newTemps, recipeVar):
     temps = getTempAndTime(recipeVar)
-    newInstruct = recipeVar
+    newInstruct = recipeVar.copy()
     count = 0
     for x in temps:
         for s in range(len(newInstruct)):
             if (newInstruct[s].rpartition(x)[2] != ""):
-                newInstruct[s] = newInstruct[s].rpartition(temps[count])[0] + x + newInstruct[s].rpartition(x)[2]
+                newInstruct[s] = newInstruct[s].rpartition(temps[count])[0] + x + newInstruct[s].rpartition(temps[count])[2]
                 count += 1
                 break
 
     return newInstruct
-
-
 #end editInstructions
 
 
@@ -95,8 +93,7 @@ def calculateNewMasterRecipe(recipeVariations):
     masterIngredients = masterRecipe["ingredients"]  #array of dicts
     sumOfIngredientVariations = masterIngredients
 
-    masterInstructions = getTempAndTime(
-        masterRecipe["instructions"])  # is an array of numbers
+    masterInstructions = getTempAndTime(masterRecipe["instructions"])  # is an array of numbers
     sumOfInstructionVariations = masterInstructions  #is an array of numbers
 
     #recipeVariations is an array of dictionaries recipeVariations[index][dict][dict]
