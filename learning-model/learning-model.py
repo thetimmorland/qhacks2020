@@ -39,15 +39,16 @@ def addRecipe():
 
 def getTempAndTime(recipeVar):
     temps={}
+    strings = recipeVar['instructions']
     values = []
-    for string in recipeVar:
-        values += [int(s) for s in recipeVar.split() if s.isdigit()]
+    for string in strings:
+        values += [int(s) for s in strings.split() if s.isdigit()]
         countTime = 0
         for x in values:
             temps['T'+countTime] = x
             count+=1
-    if count == 0
-        temps[0]=-1
+        if count == 0
+            temps[0]=-1
     return temps
 #end getTempAndTime
 
@@ -71,7 +72,7 @@ def addVariation():
 
 
 def calculateNewMasterRecipe(recipeVariations):
-    ratingRange = 5
+
     numberOfVariations = len(recipeVariations)
     master = recipeVariation[0]
     masterRecipe = master["recipe"]
@@ -86,11 +87,11 @@ def calculateNewMasterRecipe(recipeVariations):
 
     #get master ingredient list
 
-    for ingredient in sumOfIngredientVariations:#looping through an array of dict
-        ingredient['amount'] = 0#changing the amount of variation on each ingredient to start at 0
+    for ingredient in sumOfIngredientVariations:
+        ingredient[amount] = 0
     
-    for instruction in range(len(sumOfInstructionVariations)):#looping through an array of dict
-        sumOfInstructionVariations['instruction'] = 0#changing the amount of variation on each ingredient to start at 0
+    for instruction in range(len(sumOfInstructionVariations)):
+        sumOfInstructionVariations[instruction] = 0
 
     
     #need to fix first for loop, variation in recipeVariations has issue whether it is the value, or key
@@ -105,14 +106,13 @@ def calculateNewMasterRecipe(recipeVariations):
         ingredients = variation["recipe"]["ingredients"]
         rating = variation["rating"]
 
-        instruction = getTempAndTime(variation["recipe"]["instructions"])
-        change = False
-        for ingredient in ingredients:
-            if ingredients[ingredient]["amount"] != masterIngredients[ingredient]:
+        instructions = getTempAndTime(variation["recipe"]["instructions"])
 
-                variationDelta = ((ingredients[ingredient]["amount"] - masterIngredients[ingredient])*rating)/(ratingRange*numberOfVariations)
-                sumOfIngredientVariations[ingredient] += variationDelta
-                change = true
+        for ingredient in range(len(ingredients)):#loop through array of dicts
+            if ingredients[ingredient]["amount"] != masterIngredients[ingredient]["amount"]:
+
+                variationDelta = ((ingredients[ingredient]["amount"] - masterIngredients[ingredient]["amount"])*rating)/(5*numberOfVariations)
+                sumOfIngredientVariations[ingredient]["amount"] += variationDelta
                 break
 
         #check if instruction has no numbers, jaspers function will return a -1
@@ -120,6 +120,9 @@ def calculateNewMasterRecipe(recipeVariations):
             for instruction in instructions:
              if instructions[instruction] != masterInstructions[instruction]:
                 variationDelta = ((instructions[instruction] - masterIngredients[ingredient])*rating)/(ratingRange*numberOfVariations)
+        for index in range(len(instructions)):
+            if instructions[index] != masterInstructions[index]:
+                variationDelta = ((instructions[index] - masterInstructions[index])*rating)/(5*numberOfVariations)
                 sumOfInstructionVariations[instruction] += variationDelta
                 break
     
