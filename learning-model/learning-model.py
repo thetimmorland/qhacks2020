@@ -217,9 +217,9 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
          if instruction == index:
             print('a')
             amountToChange = recipeInstructions[instruction] * (random.random() * .1 + .95)
-            temporaryInstructions[instruction].append(amountToChange)
+            temporaryInstructions.append(amountToChange)
          else:
-            temporaryInstructions[instruction].append(recipeInstructions[instruction])
+            temporaryInstructions.append(recipeInstructions[instruction])
             print("a")
         temporaryRecipe.update({"ingredients" : temporaryIngredients})
         finalInstructions = editInstructions(temporaryInstructions, exampleRecipe["recipe"]["instructions"])
