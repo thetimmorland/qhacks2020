@@ -1,6 +1,7 @@
 import os
 import requests
 import csv
+
 BACKEND_URL = os.environ.get("BACKEND_URL") | "localhost:3000"
 if __name__ == "__main__":
     
@@ -32,12 +33,20 @@ def calculateNewMasterRecipe(recipeVariations):
     master = recipeVariation[0]
     masterRecipe = master["recipe"]
     masterIngredients = masterRecipe["ingredients"]
-    sumOfVariations = masterIngredients
+    sumOfIngredientVariations = masterIngredients
 
-    for ingredient in sumOfVariations:
-        sumOfVariations[ingredient] = 0
+    masterInstructions = getTempAndTime(masterRecipe["instructions"])
+    sumOfInstructionVariations = masterInstructions
+
+
+
+    #get master ingredient list
+
+    for ingredient in sumOfIngredientVariations:
+        sumOfIngredientVariations[ingredient] = 0
     
-
+    for instruction in sumOfInstructionVariations:
+        sumOfInstructionVariations[instruction] = 0
 
     
     #need to fix first for loop, variation in recipeVariations has issue whether it is the value, or key
@@ -47,7 +56,7 @@ def calculateNewMasterRecipe(recipeVariations):
 
         recipeVariation = variation["recipe"]
         ingredients = recipeVariation["ingredients"]
-        rating = variation["score"]
+        rating = variation["rating"]
 
         instruction = getTempAndTime(recipeVariation["instructions"])
 
@@ -55,11 +64,27 @@ def calculateNewMasterRecipe(recipeVariations):
             if ingredients[ingredient] != masterIngredients[ingredient]:
 
                 variationDelta = ((ingredients[ingredient] - masterIngredients[ingredient])*rating)/(5*numberOfVariations)
-                sumOfVariations[ingredient] += variationDelta
+                sumOfIngredientVariations[ingredient] += variationDelta
                 break
 
-        for instruction in instructions
+        for instruction in instructions:
+            if instructions[instruction] != masterInstructions[instruction]:
 
+                variationDelta = ((instructions[instruction] - masterIngredients[ingredient])*rating)/(5*numberOfVariations)
+                sumOfInstructionVariations[instruction] += variationDelta
+                break
+    
+
+    for instruction in sumOfInstructionVariations:
+        masterInstructions[instruction] += sumOfInstructionVariations[instruction]
+    
+    for ingredient in sumOfIngredientVariations:
+        masterIngredients[ingredient] += sumOfIngredientVariations[ingredient]
+
+    masterRecipe["instructions"] = masterInstructions
+    masterRecipe["ingredients"] = masterIngredients
+
+    return masterRecipe
     
 
 
