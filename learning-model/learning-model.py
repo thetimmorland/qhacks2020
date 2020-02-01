@@ -97,10 +97,10 @@ def editInstructions(newTemps, recipeVar):
 def calculateNewMasterRecipe(recipeVariations):
     ratingRange = 5
     numberOfVariations = len(recipeVariations)
-    master = recipeVariations[0]
-    masterRecipe = master["recipe"]
-    masterIngredients = masterRecipe["ingredients"]  #array of dicts
-    sumOfIngredientVariations = masterIngredients.copy
+    master = recipeVariations[0].copy()
+    masterRecipe = master["recipe"].copy()
+    masterIngredients = masterRecipe["ingredients"]
+    sumOfIngredientVariations = masterIngredients
 
     masterInstructions = getTempAndTime(masterRecipe["instructions"])  # is an array of numbers
     sumOfInstructionVariations =copyArrofDict(masterInstructions)  #is an array of numbers
@@ -128,6 +128,8 @@ def calculateNewMasterRecipe(recipeVariations):
 
         instruction = getTempAndTime(variation["recipe"]["instructions"])
         change = False
+        #print(ingredients)
+        print(masterIngredients)
         for num in range(len(ingredients)):
             if ingredients[num]["amount"] != masterIngredients[num]["amount"]:
 
@@ -151,6 +153,7 @@ def calculateNewMasterRecipe(recipeVariations):
         masterInstructions[instruction] += sumOfInstructionVariations[instruction]
 
     for ingredient in range(len(sumOfIngredientVariations)):
+        #print(masterIngredients[ingredient]["amount"])
         masterIngredients[ingredient]["amount"] += sumOfIngredientVariations[ingredient]["amount"]
 
     masterRecipe["instructions"] = editInstructions(
@@ -272,7 +275,8 @@ if __name__ == "__main__":
     example = { "recipe": ex, "rating": 5 }
     recipeVariations = createRecipeVariations(example, 100)
 
-    print(calculateNewMasterRecipe(recipeVariations))
+    newRecipe = calculateNewMasterRecipe(recipeVariations)
+    #print(calculateNewMasterRecipe(recipeVariations))
    # print(recipeVariations)
     #newRecipe = calculateNewMasterRecipe(recipeVariations)
    # print(newRecipe)
