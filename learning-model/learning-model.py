@@ -116,20 +116,13 @@ def calculateNewMasterRecipe(recipeVariations):
                 break
 
         #check if instruction has no numbers, jaspers function will return a -1
-<<<<<<< HEAD
-<<<<<<< HEAD
         if not change:
             for instruction in instructions:
              if instructions[instruction] != masterInstructions[instruction]:
                 variationDelta = ((instructions[instruction] - masterIngredients[ingredient])*rating)/(ratingRange*numberOfVariations)
-=======
-=======
->>>>>>> parent of 9aab8b6... Merge branch 'master' of https://github.com/thetimmorland/qhacks2020
         for index in range(len(instructions)):
             if instructions[index] != masterInstructions[index]:
-
                 variationDelta = ((instructions[index] - masterInstructions[index])*rating)/(5*numberOfVariations)
->>>>>>> parent of 9aab8b6... Merge branch 'master' of https://github.com/thetimmorland/qhacks2020
                 sumOfInstructionVariations[instruction] += variationDelta
                 break
     
