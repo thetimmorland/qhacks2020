@@ -256,8 +256,8 @@ if __name__ == "__main__":
             "Add flour.",
             "Create well in flour.",
             "Crack egg in well.",
-            "heat oven to 200 C",
-            "cook for 20 min",
+            "heat oven to 200.0 C",
+            "cook for 20.0 min",
         ],
     }
     example = {"recipe": ex, "rating": 5}
