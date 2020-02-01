@@ -97,17 +97,20 @@ def editInstructions(newTemps, recipeVar):
 def calculateNewMasterRecipe(recipeVariations):
     ratingRange = 5
     numberOfVariations = len(recipeVariations)
+    #print(recipeVariations[0])
     master = recipeVariations[0].copy()
     masterRecipe = master["recipe"].copy()
-    masterIngredients = masterRecipe["ingredients"]
-    sumOfIngredientVariations = masterIngredients
+    masterIngredients = copyArrOfDict(masterRecipe["ingredients"])
+    sumOfIngredientVariations = copyArrOfDict(masterIngredients)
 
     masterInstructions = getTempAndTime(masterRecipe["instructions"])  # is an array of numbers
-    sumOfInstructionVariations =copyArrofDict(masterInstructions)  #is an array of numbers
+    sumOfInstructionVariations = copyArrOfDict(masterInstructions)  #is an array of numbers
 
     #recipeVariations is an array of dictionaries recipeVariations[index][dict][dict]
 
     #get master ingredient list
+
+    #print(masterIngredients)
 
     for ingredientIndex in range(len(sumOfIngredientVariations)):  #looping through an array of dict
         sumOfIngredientVariations[ingredientIndex]["amount"] = 0  #changing the amount of variation on each ingredient to start at 0
@@ -122,14 +125,15 @@ def calculateNewMasterRecipe(recipeVariations):
         #ingredients = recipeVariation["ingredients"]
         #rating = variation["rating"]
 
-        ingredients = variation["recipe"]['ingredients']
+        ingredients = copyArrOfDict(variation["recipe"]['ingredients'])
         #print(ingredients)
         rating = variation["rating"]
 
         instruction = getTempAndTime(variation["recipe"]["instructions"])
         change = False
         #print(ingredients)
-        print(masterIngredients)
+        #print(masterIngredients)
+       
         for num in range(len(ingredients)):
             if ingredients[num]["amount"] != masterIngredients[num]["amount"]:
 
@@ -276,7 +280,7 @@ if __name__ == "__main__":
     recipeVariations = createRecipeVariations(example, 100)
 
     newRecipe = calculateNewMasterRecipe(recipeVariations)
-    #print(calculateNewMasterRecipe(recipeVariations))
+    print(calculateNewMasterRecipe(recipeVariations))
    # print(recipeVariations)
     #newRecipe = calculateNewMasterRecipe(recipeVariations)
    # print(newRecipe)
