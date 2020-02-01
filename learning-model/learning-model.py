@@ -103,7 +103,7 @@ def calculateNewMasterRecipe(recipeVariations):
     sumOfIngredientVariations = masterIngredients
 
     masterInstructions = getTempAndTime(masterRecipe["instructions"])  # is an array of numbers
-    sumOfInstructionVariations = masterInstructions.copy()  #is an array of numbers
+    sumOfInstructionVariations =copyArrofDict(masterInstructions)  #is an array of numbers
 
     #recipeVariations is an array of dictionaries recipeVariations[index][dict][dict]
 
