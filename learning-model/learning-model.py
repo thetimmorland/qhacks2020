@@ -182,8 +182,8 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
         temporaryInstructions = {}
         #temporaryInstructions = defaultdict(list)
         #count = 0
-
-        if (random.random() > 0.33):
+        za=random.random()
+        if (za > 0.33):
             index = int(random.random() * (len(recipeIngredients)))
             for ingredientIndex in range(len(recipeIngredients)):
                 #count += 1
