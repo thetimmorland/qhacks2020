@@ -21,8 +21,9 @@ example={
             "cook for 20 min",
         ],
     }
+
 #if __name__ == "__main__":
-    
+    recipeVariations = createRecipeVariations()
     
 
     
@@ -158,7 +159,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
         index = random.random()*(len(recipeIngredients)-1)
         for ingredient in recipeIngredients:
             count+=1
-            if(count  = index)
+            if(count == index)
                 amountToChange = recipeIngredients[ingredient] * (random.random() * .1 + .95)
                 temporaryIngredients[ingredient] = amountToChange
      else   
