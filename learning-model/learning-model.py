@@ -11,6 +11,18 @@ def addRecipe():
 def addVariation():
 
 
-def calculateNewMasterRecipe(recipe_variations):
-    
+def calculateNewMasterRecipe(recipeVariations):
+
+    numberOfVariations = recipeVariations.length()
+    for variation in recipeVariations:
+        recipeVariation = variation["recipe"]
+
+        for ingredient in recipeVariation["ingredients"]:
+
+
+
+
+def calculateRatingValue()
+        
+        
 
