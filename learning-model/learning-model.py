@@ -116,7 +116,7 @@ def calculateNewMasterRecipe(recipeVariations):
         #ingredients = recipeVariation["ingredients"]
         #rating = variation["rating"]
 
-        ingredients = variation["recipe"]["ingredients"]
+        ingredients = variation["recipe"]['ingredients']
         rating = variation["rating"]
 
         instruction = getTempAndTime(variation["recipe"]["instructions"])
@@ -157,8 +157,8 @@ def calculateNewMasterRecipe(recipeVariations):
 
 def createRecipeVariations(exampleRecipe, numberOfVariations):
 
-    recipeIngredients = exampleRecipe["ingredients"]
-    recipeInstructions = getTempAndTime(exampleRecipe["instructions"])
+    recipeIngredients = exampleRecipe["recipe"]["ingredients"]
+    recipeInstructions = getTempAndTime(exampleRecipe["recipe"]["instructions"])
     allVariations = []
 
     random.seed()
@@ -197,7 +197,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
         #temporaryRecipe["instructions"] = editInstructions(temporaryInstructions, exampleRecipe["instructions"])
 
         temporaryRecipe.update({"ingredients" : temporaryIngredients})
-        finalInstructions = editInstructions(temporaryInstructions, exampleRecipe["instructions"])
+        finalInstructions = editInstructions(temporaryInstructions, exampleRecipe["recipe"]["instructions"])
         temporaryRecipe.update({"instructions" : finalInstructions})
 
         finalObject = {}
@@ -212,7 +212,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
 #end createRecipeVariations
 
 if __name__ == "__main__":
-    example = {
+    ex = {
     "name":
     "Cake",
     'notes':
@@ -247,6 +247,7 @@ if __name__ == "__main__":
         "cook for 20 min",
     ],
     }
+    example = { "recipe": ex, "rating": 5 }
     recipeVariations = createRecipeVariations(example, 100)
     newRecipe = calculateNewMasterRecipe(recipeVariations)
     print(newRecipe)
