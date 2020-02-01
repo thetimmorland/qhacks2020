@@ -133,6 +133,6 @@ def calculateNewMasterRecipe(recipeVariations):
 
 
 def calculateRatingValue()
-        
+
         
 
