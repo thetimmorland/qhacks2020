@@ -3,7 +3,24 @@ import requests
 import csv
 import re
 BACKEND_URL = os.environ.get("BACKEND_URL") | "localhost:3000"
-if __name__ == "__main__":
+example={
+      name: "Cake",
+        notes: "This recipe is very good. I make it all the time with my kids!",
+        ingredients: [
+            { name: "Eggs", amount: 2, unit: "" },
+            { name: "Flour", amount: 2, unit: "Cups" },
+            { name: "Sugar", amount: 2, unit: "Cups" },
+            { name: "Baking Soda", amount: 2, unit: "Teaspoons" },
+        ],
+        instructions: [
+            "Add flour.",
+            "Create well in flour.",
+            "Crack egg in well.",
+            "heat oven to 200 C",
+            "cook for 20 min",
+        ],
+    }
+#if __name__ == "__main__":
     
     
 
@@ -28,6 +45,8 @@ def getTempAndTime(recipeVar):
         for x in values:
             temps['T'+countTime] = x
             count+=1
+        if count ==0
+            temps[0]=-1
     return temps
 
 def editInstructions(newTemps,recipeVar)
@@ -37,8 +56,10 @@ def editInstructions(newTemps,recipeVar)
     for(x in temp):
         for s in range(len(newInstruct)):
             if(newInstruct[s].rpartition(x)[2]!=""):
-                newInstruct[s] = newInstruct[s].rpartition(x)[0]+x+newInstruct[s].rpartition(x)[2]
+                newInstruct[s] = newInstruct[s].rpartition(temps[count])[0]+x+newInstruct[s].rpartition(x)[2]
+                count+=1
                 break
+    
     return newInstruct
 
 
