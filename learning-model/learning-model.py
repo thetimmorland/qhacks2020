@@ -28,21 +28,36 @@ def calculateNewMasterRecipe(recipeVariations):
     master = recipeVariation[0]
     masterRecipe = master["recipe"]
     masterIngredients = masterRecipe["ingredients"]
-    sumOfVariations = 0;
+    sumOfVariations = masterIngredients
 
+    for ingredient in sumOfVariations:
+        sumOfVariations[ingredient] = 0
+    
+
+
+    
+    #need to fix first for loop, variation in recipeVariations has issue whether it is the value, or key
     for variation in recipeVariations:
+        
+
+
         recipeVariation = variation["recipe"]
         ingredients = recipeVariation["ingredients"]
         rating = variation["score"]
+
+        instruction = getTempAndTime(recipeVariation["instructions"])
 
         for ingredient in ingredients:
             if ingredients[ingredient] != masterIngredients[ingredient]:
 
                 variationDelta = ((ingredients[ingredient] - masterIngredients[ingredient])*rating)/(5*numberOfVariations)
-                sumOfVariations += variationDelta
+                sumOfVariations[ingredient] += variationDelta
                 break
+
+        for instruction in instructions
+
     
-    return sumOfVariations
+
 
 
 
