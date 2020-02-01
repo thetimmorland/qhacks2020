@@ -208,10 +208,12 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
                     })
                     
         else:
-            index = random.random() * len(recipeInstructions)
+            
+            index = int(random.random() * len(recipeInstructions))
             for instruction in range(len(recipeInstructions)):
 
                 if instruction == index:
+                    print('a')
                     amountToChange = recipeInstructions[instruction] * (
                         random.random() * .1 + .95)
                     temporaryInstructions[instruction] = amountToChange
