@@ -32,7 +32,7 @@ def getTempAndTime(recipeVar):
     temps = []
     values = []
     for string in recipeVar:
-        values += re.findall(r"[-+]?\d*\.\d+|\d+", string)
+        values += re.findall(r"[-+]?\d*\.\d+|\d+", string)#find all numbers in the string
     if not values:
         temps[0] = -1
     for x in range(len(values)):
@@ -41,8 +41,6 @@ def getTempAndTime(recipeVar):
         except:
             print("error not a float")
     return values
-
-
 # end getTempAndTime
 
 
@@ -143,7 +141,10 @@ def calculateNewMasterRecipe(recipeVariations):
                     break
 
     for instruction in range(len(sumOfInstructionVariations)):
-        masterInstructions[instruction] += sumOfInstructionVariations[instruction]/numberOfInstructionVariations[instruction]
+        if numberOfInstructionVariations[instruction]!=0:
+            masterInstructions[instruction] += sumOfInstructionVariations[instruction]/numberOfInstructionVariations[instruction]
+        else:
+            masterInstructions[instruction] += sumOfInstructionVariations[instruction]
 
     for ingredient in range(len(sumOfIngredientVariations)):
         # print(masterIngredients[ingredient]["amount"])
@@ -158,7 +159,7 @@ def calculateNewMasterRecipe(recipeVariations):
 
 
 def createRecipeVariations(exampleRecipe, numberOfVariations):
-    changingRange = 0.2
+    changingRange = 1
     recipeIngredients = exampleRecipe["recipe"]["ingredients"]
     recipeInstructions = getTempAndTime(
         exampleRecipe["recipe"]["instructions"])
@@ -234,6 +235,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
             finalObject["rating"] = 1
         else:
             finalObject["rating"] = 5
+        # finalObject["rating"] = random.randint(0,5)
 
         allVariations.append(finalObject)
 
@@ -279,7 +281,7 @@ if __name__ == "__main__":
         ],
     }
     example = {"recipe": ex, "rating": 5}
-    recipeVariations = createRecipeVariations(example, 10000)
+    recipeVariations = createRecipeVariations(example, 10)
 
     newRecipe = calculateNewMasterRecipe(recipeVariations)
     print(calculateNewMasterRecipe(recipeVariations))
