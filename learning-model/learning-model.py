@@ -97,17 +97,20 @@ def editInstructions(newTemps, recipeVar):
 def calculateNewMasterRecipe(recipeVariations):
     ratingRange = 5
     numberOfVariations = len(recipeVariations)
+    #print(recipeVariations[0])
     master = recipeVariations[0].copy()
     masterRecipe = master["recipe"].copy()
-    masterIngredients = masterRecipe["ingredients"]
-    sumOfIngredientVariations = masterIngredients
+    masterIngredients = copyArrOfDict(masterRecipe["ingredients"])
+    sumOfIngredientVariations = copyArrOfDict(masterIngredients)
 
     masterInstructions = getTempAndTime(masterRecipe["instructions"])  # is an array of numbers
-    sumOfInstructionVariations =copyArrofDict(masterInstructions)  #is an array of numbers
+    sumOfInstructionVariations = copyArrOfDict(masterInstructions)  #is an array of numbers
 
     #recipeVariations is an array of dictionaries recipeVariations[index][dict][dict]
 
     #get master ingredient list
+
+    #print(masterIngredients)
 
     for ingredientIndex in range(len(sumOfIngredientVariations)):  #looping through an array of dict
         sumOfIngredientVariations[ingredientIndex]["amount"] = 0  #changing the amount of variation on each ingredient to start at 0
@@ -122,15 +125,15 @@ def calculateNewMasterRecipe(recipeVariations):
         #ingredients = recipeVariation["ingredients"]
         #rating = variation["rating"]
 
-        ingredients = variation["recipe"]['ingredients']
+        ingredients = copyArrOfDict(variation["recipe"]['ingredients'])
         #print(ingredients)
         rating = variation["rating"]
 
         instruction = getTempAndTime(variation["recipe"]["instructions"])
         change = False
         #print(ingredients)
-        print(masterIngredients)
-        for num in range(len(ingredients)):
+        # print(masterIngredients)
+        for num in range(len(ingredients)-1):
             if ingredients[num]["amount"] != masterIngredients[num]["amount"]:
 
                 variationDelta = ((ingredients[num]["amount"] - masterIngredients[num]["amount"]) *rating) / (ratingRange * numberOfVariations)
@@ -169,7 +172,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
     recipeIngredients = exampleRecipe["recipe"]["ingredients"]
     recipeInstructions = getTempAndTime(exampleRecipe["recipe"]["instructions"])
     allVariations = []
-
+    allVariations.append(exampleRecipe)
     random.seed()
 
     for i in range(numberOfVariations):
@@ -179,15 +182,13 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
         temporaryInstructions = {}
         #temporaryInstructions = defaultdict(list)
         #count = 0
-
-        if (random.random() > 0.33):
+        za=random.random()
+        if (za > 0.33):
             index = int(random.random() * (len(recipeIngredients)))
             for ingredientIndex in range(len(recipeIngredients)):
                 #count += 1
-                
                 if (ingredientIndex == index):
-                    amountToChange = recipeIngredients[ingredientIndex][
-                        "amount"] * (random.random() * .1 + .95)
+                    amountToChange = recipeIngredients[ingredientIndex]["amount"] * (random.random() * .1 + .95)
                     
                     #temporaryIngredients[ingredientIndex]["amount"] = amountToChange
                     #temporaryIngredients[ingredientIndex]["name"] = recipeIngredients[ingredientIndex]["name"]
@@ -207,14 +208,17 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
                     })
                     
         else:
-            index = random.random() * len(recipeInstructions)
+            
+            index = int(random.random() * len(recipeInstructions))
             for instruction in range(len(recipeInstructions)):
 
                 if instruction == index:
+                    print('a')
                     amountToChange = recipeInstructions[instruction] * (
                         random.random() * .1 + .95)
                     temporaryInstructions[instruction] = amountToChange
-               
+                else:
+                   temporaryInstructions[instruction]=recipeInstructions[instruction]
                 
                     
 
@@ -276,7 +280,7 @@ if __name__ == "__main__":
     recipeVariations = createRecipeVariations(example, 100)
 
     newRecipe = calculateNewMasterRecipe(recipeVariations)
-    #print(calculateNewMasterRecipe(recipeVariations))
+    print(calculateNewMasterRecipe(recipeVariations))
    # print(recipeVariations)
     #newRecipe = calculateNewMasterRecipe(recipeVariations)
    # print(newRecipe)
