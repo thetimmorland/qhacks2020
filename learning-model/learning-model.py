@@ -50,7 +50,7 @@ def getTempAndTime(recipeVar):
             temps[0]=-1
     return temps
 
-def editInstructions(newTemps,recipeVar)
+def editInstructions(newTemps,recipeVar):
     temps=getTempAndTime(recipeVar['instructions'])
     newInstruct = recipeVar['instructions']
     count = 0
@@ -71,7 +71,7 @@ def addVariation():
 
 def calculateNewMasterRecipe(recipeVariations):
 
-    numberOfVariations = recipeVariations.length()
+    numberOfVariations = len(recipeVariations)
     master = recipeVariation[0]
     masterRecipe = master["recipe"]
     masterIngredients = masterRecipe["ingredients"]
@@ -134,7 +134,7 @@ def calculateNewMasterRecipe(recipeVariations):
 
 
 
-def createRecipeVariations(exampleRecipe, numberOfVariations)
+def createRecipeVariations(exampleRecipe, numberOfVariations):
 
     recipeIngredients = exampleRecipe["ingredients"]
     recipeInstructions = exampleRecipe["instructions"]
@@ -147,14 +147,21 @@ def createRecipeVariations(exampleRecipe, numberOfVariations)
         temporaryRecipe={}
         temporaryIngredients={}
         temporaryInstructions={}
-
+        count = 0
+    if(random.random()>0.5):
+        index = random.random()*len(recipeIngredients)
         for ingredient in recipeIngredients:
-            amountToChange = recipeIngredients[ingredient] * (random.random() * .1 + .95)
-            temporaryIngredients[ingredient] = amountToChange
-        
+            count+=1
+            if(count  = index)
+                amountToChange = recipeIngredients[ingredient] * (random.random() * .1 + .95)
+                temporaryIngredients[ingredient] = amountToChange
+     else   
+        index = random.random()*len(recipeInstructions)
         for instruction in recipeInstructions:
-            amountToChange = recipeInstruction[instruction] * (random.rand() * .1 + .95)
-            temporaryInstructions[instruction] = amountToChange
+            count+=1
+            if count == index:
+                amountToChange = recipeInstruction[instruction] * (random.rand() * .1 + .95)
+                temporaryInstructions[instruction] = amountToChange
         
         temporaryRecipe["ingredients"] = temporaryIngredients
         temporaryRecipe["instructions"] = temporaryInstructions
