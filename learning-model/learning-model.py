@@ -45,7 +45,7 @@ def getTempAndTime(recipeVar):
         for x in values:
             temps['T'+countTime] = x
             count+=1
-        if count ==0
+        if count == 0
             temps[0]=-1
     return temps
 
@@ -127,12 +127,6 @@ def calculateNewMasterRecipe(recipeVariations):
 
     return masterRecipe
     
-
-
-
-
-
 def calculateRatingValue()
-
         
 
