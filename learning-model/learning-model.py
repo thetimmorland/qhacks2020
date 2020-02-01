@@ -71,8 +71,8 @@ def getTempAndTime(recipeVar):
 
 
 def editInstructions(newTemps, recipeVar):
-    temps = getTempAndTime(recipeVar["instructions"])
-    newInstruct = recipeVar["instructions"]
+    temps = getTempAndTime(recipeVar)
+    newInstruct = recipeVar
     count = 0
     for x in temps:
         for s in range(len(newInstruct)):
