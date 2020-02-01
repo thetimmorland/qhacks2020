@@ -3,6 +3,7 @@ import requests
 import csv
 import re
 import random
+import copy
 from collections import defaultdict
 BACKEND_URL = os.environ.get("BACKEND_URL") or "localhost:3000"
 example = {
@@ -41,6 +42,12 @@ example = {
     ],
 }
 
+def copyArrOfDict(x):
+    cpy_list = []
+    for li in x:
+        d2 = copy.deepcopy(li)
+        cpy_list.append(d2)
+    return cpy_list
 
 def addRecipe():
     r = requests.get(BACKEND_URL + "/api/recipes")
@@ -93,7 +100,7 @@ def calculateNewMasterRecipe(recipeVariations):
     master = recipeVariations[0]
     masterRecipe = master["recipe"]
     masterIngredients = masterRecipe["ingredients"]  #array of dicts
-    sumOfIngredientVariations = masterIngredients
+    sumOfIngredientVariations = masterIngredients.copy
 
     masterInstructions = getTempAndTime(masterRecipe["instructions"])  # is an array of numbers
     sumOfInstructionVariations = masterInstructions  #is an array of numbers
