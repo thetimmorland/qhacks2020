@@ -27,8 +27,8 @@ porkChop = {
                 {"name" : "pork chops", "amount": 2, "unit": ""},
                 {"name" : "brown sugar", "amount": 60, "unit": "ml"},
                 {"name" : "butter", "amount": 30, "unit": "ml"},
-                {"name" : "thyme", "amount": 4, "unit": "sprigs"},
-                {"name" : "garlic", "amount": 2, "unit": "cloves"},
+                {"name" : "thyme", "amount": 4, "unit": " sprigs"},
+                {"name" : "garlic", "amount": 2, "unit": " cloves"},
             ],
             "instructions": [
                 "Tenderize porkchops with a fork",
@@ -41,4 +41,26 @@ porkChop = {
                 "Remove the pan from the stove, add butter, garlic, and thyme, basting the pork chops",
                 "Let the porkchops rest in the pan for 5 minutes",
             ],
+}
+
+friedNoodles = {
+    "name" : "Fried Noodles",
+        "notes" :   "Kentucky Fried Noodles",
+        "ingredients"   :   [
+            {"name" : "butter", "amount": 30, "unit": "ml"},
+            {"name" : "noodles", "amount": 1, "unit": " pack"},
+            {"name" : "Soy Sauce", "amount": 45, "unit": "ml"},
+            {"name" : "garlic", "amount": .5, "unit": " cloves"},
+            {"name" : "salt", "amount": 15, "unit": "ml"},
+        ],
+        "instructions": [
+            "Fill a pot with water and bring to a boil",
+            "Put salt and noodles in water, stirring for 2 minutes",
+            "Drain the noodles",
+            "Put the pan on high heat",
+            "Chop the garlic, then put it on the pan",
+            "After 1 minute has passed, add the noodles, butter and soy sauce to the pan",
+            "Stir until everything is evenly spread out",
+        ],
+
 }
