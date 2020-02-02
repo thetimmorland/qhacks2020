@@ -13,76 +13,139 @@ const app = express();
 app.use(express.json());
 
 app.post("/api/recipes", (req, res) => {
-  client.connect((err, client) => {
-    const db = client.db("autochef");
-    db.collection("recipes").insertOne(req.body, (err, r) => {
-      res.send(r.insertedId).status(200);
-      client.close();
+  client
+    .connect()
+    .then(client => {
+      client
+        .db("autochef")
+        .collection("recipes")
+        .insertOne(req.body)
+        .then(recipe => {
+          res.send(recipe.insertedId.toHexString()).status(200);
+          client.close();
+        })
+        .catch(err => {
+          res.send(err).status(500);
+        });
+    })
+    .catch(err => {
+      res.send(err).status(500);
     });
-  });
 });
 
 app.get("/api/recipes", (req, res) => {
-  client.connect((err, client) => {
-    db = client.db("autochef");
-    db.collection("recipes")
-      .find()
-      .limit(100)
-      .toArray((err, docs) => {
-        let id = [];
-        docs.map(doc => {
-          id.push(doc._id);
+  client
+    .connect()
+    .then(client => {
+      client
+        .db("autochef")
+        .collection("recipes")
+        .find()
+        .limit(100)
+        .toArray()
+        .then(recipes => {
+          assert.equal(null, err);
+          let recipeIds = [];
+          recipes.map(recipe => {
+            recipeIds.push(recipe._id.toHexString);
+          });
+          res.send(recipeIds).status(200);
+        })
+        .catch(err => {
+          res.send(err).status(500);
         });
-        res.send(id).status(200);
-      });
-  });
+    })
+    .catch(err => {
+      res.send(err).status(500);
+    });
 });
 
 app.get("/api/recipes/:recipeId", (req, res) => {
-  client.connect((err, client) => {
-    db = client.db("autochef");
-    db.collection("recipes").findOne(
-      { _id: ObjectId(req.params.recipeId) },
-      (err, recipe) => {
-        res.send(recipe).status(200);
-      }
-    );
-  });
+  client
+    .connect()
+    .then(client => {
+      client
+        .db("autochef")
+        .collection("recipes")
+        .findOne({ _id: ObjectId(req.params.recipeId) })
+        .then(recipe => {
+          res.send(recipe).status(200);
+          client.close();
+        })
+        .catch(err => {
+          res.send(err).status(500);
+        });
+    })
+    .catch(err => {
+      res.send(err).status(500);
+    });
 });
 
 app.put("/api/recipes/:recipeId", (req, res) => {
-  client.connect((err, client) => {
-    const db = client.db("autochef");
-    db.collection("recipes").findOneAndReplace(
-      { _id: ObjectId(req.params.recipeId) },
-      req.body
-    );
-  });
-  res.sendStatus(200);
+  client
+    .connect()
+    .then(client => {
+      client
+        .db("autochef")
+        .collection("recipes")
+        .findOneAndReplace({ _id: ObjectId(req.params.recipeId) }, req.body)
+        .then(recipe => {
+          res.sendStatus(200);
+        })
+        .catch(err => {
+          res.send(err).sendStatus(500);
+        });
+    })
+    .catch(err => {
+      res.send(err).status(500);
+    });
 });
 
 app.post("/api/ratings/:recipeId", (req, res) => {
   let rating = { recipeId: req.params.recipeId, ...req.body };
   console.log(rating);
 
-  client.connect((err, client) => {
-    const db = client.db("autochef");
-    db.collection("ratings").insertOne(rating);
-  });
-
-  res.sendStatus(200);
+  client
+    .connect()
+    .then(client => {
+      client
+        .db("autochef")
+        .collection("ratings")
+        .insertOne(rating)
+        .then(rating => {
+          res.send(rating.insertedId.toHexString).status(200);
+        })
+        .catch(err => {
+          res.send(err).status(500);
+        });
+    })
+    .catch(err => {
+      res.send(err).status(500);
+    });
 });
 
 app.get("/api/ratings/:recipeId", (req, res) => {
-  client.connect((err, client) => {
-    const db = client.db("autochef");
-    db.collection("ratings")
-      .find({ recipeId: req.params.recipeId })
-      .limit(100)
-      .toArray((err, ratings) => {
-        res.send(ratings).status(200);
-      });
-  });
+  client
+    .connect()
+    .then(client => {
+      client
+        .db("autochef")
+        .collection("ratings")
+        .find({ recipeId: req.params.recipeId })
+        .limit(100)
+        .toArray()
+        .then(ratings => {
+          res.send(ratings).status(200);
+        })
+        .catch(err => {
+          res.send(err).statusCode(500);
+        });
+    })
+    .catch(err => {
+      res.send(err).status(500);
+    });
 });
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
+});
