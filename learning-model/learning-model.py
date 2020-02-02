@@ -260,7 +260,7 @@ if __name__ == "__main__":
             "notes" :   "Yummy yummy in my tummy",
             "ingredients"   :  [
                 {"name" : "", "amount": "118", "unit": "ml"},
-                {"name" : "water", "amount": "", "unit": "ml"},
+                {"name" : "water", "amount": "5", "unit": "ml"},
                 {"name" : "pork chops", "amount": "2", "unit": ""},
                 {"name" : "brown sugar", "amount": "60", "unit": "ml"},
                 {"name" : "butter", "amount": "30", "unit": "ml"},
@@ -282,12 +282,12 @@ if __name__ == "__main__":
     example = {"recipe": porkChop, "rating": 5}
     recipeVariations = createRecipeVariations(example, 500)
 
-    #pp = pprint.PrettyPrinter(indent=4)
-    #pp.pprint(calculateNewMasterRecipe(recipeVariations))
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint(calculateNewMasterRecipe(recipeVariations))
     #  print(calculateNewMasterRecipe(recipeVariations))
-    while True:
-        changeRecipe()
-        time.sleep(5)
+    # while True:
+    #     changeRecipe()
+    #     time.sleep(5)
 
 # print(recipeVariations)
 #newRecipe = calculateNewMasterRecipe(recipeVariations)
