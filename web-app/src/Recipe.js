@@ -42,7 +42,7 @@ export default function Recipe() {
       });
   };
 
-  if (recipe) {
+  if (recipe != null) {
     return (
       <>
         <TopBar>
