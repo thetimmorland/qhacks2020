@@ -21,6 +21,32 @@ def copyArrOfDict(x):
 def changeRecipe():
     r = requests.get(BACKEND_URL + "/api/recipes")
     recipesID = r.json()
+    porkChop = {
+
+        "name"  :   "Pork Chop",
+            "notes" :   "Yummy yummy in my tummy",
+            "ingredients"   :  [
+                {"name" : "salt", "amount": 118, "unit": "ml"},
+                {"name" : "water", "amount": 710, "unit": "ml"},
+                {"name" : "pork chops", "amount": 2, "unit": ""},
+                {"name" : "brown sugar", "amount": 60, "unit": "ml"},
+                {"name" : "butter", "amount": 30, "unit": "ml"},
+                {"name" : "thyme", "amount": 4, "unit": " sprigs"},
+                {"name" : "garlic", "amount": 2, "unit": " cloves"},
+            ],
+            "instructions": [
+                "Tenderize porkchops with a fork",
+                "Place salt, sugar, and water in a plastic bag and stire until mixed",
+                "Put porkchops in bag, and let marinate for 30 minutes",
+                "Remove porkchops from bag and dry with paper towel",
+                "Heat pan to medium high heat",
+                "Cook on each side for 1 minute",
+                "Reduce heat to medium and continue cooking for 9 minutes, flipping the chops every minute",
+                "Remove the pan from the stove, add butter, garlic, and thyme, basting the pork chops",
+                "Let the porkchops rest in the pan for 5 minutes",
+         s   ],}
+    test = {"recipe":porkchop,"rating":5}
+    requests.post(BACKEND_URL + "/api/ratings/" + x, data=test)
     for x in recipesID:
         r = requests.get(BACKEND_URL + "/api/ratings/" + str(x))
         master = calculateNewMasterRecipe(r.json())
@@ -254,6 +280,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
 # end createRecipeVariations
 
 if __name__ == "__main__":
+
     while True:
         changeRecipe()
         time.sleep(5)
