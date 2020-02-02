@@ -7,7 +7,8 @@ import pprint
 import copy
 import time
 from collections import defaultdict
-BACKEND_URL = os.environ.get("BACKEND_URL") or "localhost:3000"
+BACKEND_URL = os.environ.get("BACKEND_URL") or "http://localhost:3000"
+#BACKEND_URL = "http://localhost:3000"
 
 
 def copyArrOfDict(x):
@@ -99,7 +100,13 @@ def editInstructions(newTemps, recipeVar):
 
 def calculateNewMasterRecipe(recipeVariations):
     ratingRange = 5
+    
     numberOfVariations = len(recipeVariations)
+    
+    print(numberOfVariations)
+    if len(recipeVariations) == 0:
+        return
+    
     master = recipeVariations[0].copy()
     masterRecipe = master["recipe"].copy()
     masterIngredients = copyArrOfDict(masterRecipe["ingredients"])
