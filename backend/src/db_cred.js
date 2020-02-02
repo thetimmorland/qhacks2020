@@ -1,0 +1,1 @@
+module.exports = "mongodb://MongoUser:admin@qhacks2020-akqrf.gcp.mongodb.net"
