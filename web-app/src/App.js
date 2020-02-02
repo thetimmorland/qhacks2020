@@ -23,7 +23,7 @@ function App() {
         <Route path="/editor">
           <Editor />
         </Route>
-        <Route path="/recipe/:recipeId">
+        <Route path="/recipes/:recipeId">
           <Recipe />
         </Route>
       </Switch>

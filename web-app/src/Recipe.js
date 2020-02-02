@@ -1,58 +1,72 @@
-import { Grid, Typography } from "@material-ui/core";
-import React, { useState } from "react";
+import { Paper, Box, Grid, Typography } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import Content from "./Content";
-import HeaderPaper from "./HeaderPaper";
+
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 export default function Recipe() {
   let { recipeId } = useParams();
 
-  const [recipe, setRecipe] = useState({
-    id: 1,
-    name: "Cake",
-    notes: "This recipe is very good. I make it all the time with my kids!",
-    ingredients: [
-      { name: "Eggs", amount: 2, unit: "" },
-      { name: "Flour", amount: 2, unit: "Cups" },
-      { name: "Sugar", amount: 2, unit: "Cups" },
-      { name: "Baking Soda", amount: 2, unit: "Teaspoons" }
-    ],
-    instructions: ["Add flour.", "Create well in flour.", "Crack egg in well."]
-  });
+  const [recipe, setRecipe] = useState();
 
-  return (
-    <Content>
-      <Grid item>
-        <HeaderPaper header={recipe.name} variant="h6">
-          <Typography>{recipe.notes}</Typography>
-        </HeaderPaper>
-      </Grid>
-      <Grid item>
-        <HeaderPaper header="Ingredients" variant="h6">
-          <Grid container>
-            {recipe.ingredients.map(ingredient => (
-              <Grid item xs={12} sm={6}>
-                <Typography>
-                  <li>
-                    {ingredient.amount} {ingredient.unit} {ingredient.name}
-                  </li>
-                </Typography>
-              </Grid>
-            ))}
+  useEffect(async () => {
+    const recipe = await fetch(`/api/recipes/${recipeId}`).then(response => {
+      return response.json();
+    });
+    console.log(recipe);
+    setRecipe(recipe);
+  }, []);
+
+  if (recipe) {
+    return (
+      <Box p={2}>
+        <Grid container direction="column" spacing={2}>
+          <Grid item>
+            <Paper>
+              <Box p={2}>
+                <Typography>{recipe.Name}</Typography>
+                <Typography>{recipe.Notes}</Typography>
+              </Box>
+            </Paper>
           </Grid>
-        </HeaderPaper>
-      </Grid>
-      <Grid item>
-        <HeaderPaper header="Instructions" variant="h6">
-          <ol>
-            {recipe.instructions.map(instruction => (
-              <Typography>
-                <li>{instruction}</li>
-              </Typography>
-            ))}
-          </ol>
-        </HeaderPaper>
-      </Grid>
-    </Content>
-  );
+          <Grid item>
+            <Paper>
+              <Box p={2}>
+                <Grid container>
+                  {recipe.ingredients.map((ingredient, idx) => (
+                    <Grid key={idx} item xs={12} sm={6}>
+                      <Typography>
+                        <li>
+                          {ingredient.amount} {ingredient.unit} {ingredient.name}
+                        </li>
+                      </Typography>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
+            </Paper>
+          </Grid>
+          <Grid item>
+            <Paper header="Instructions" variant="h6">
+              <Box p={2}>
+                <ol>
+                  {recipe.instructions.map((instruction, idx) => (
+                    <Typography key={idx}>
+                      <li>{instruction}</li>
+                    </Typography>
+                  ))}
+                </ol>
+              </Box>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Box>
+    );
+  } else {
+    return (
+      <Box m={4}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 }

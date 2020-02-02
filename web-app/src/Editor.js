@@ -12,6 +12,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
+import { useHistory } from "react-router-dom";
 
 import TopBar from "./TopBar";
 
@@ -24,6 +25,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Editor() {
+  let history = useHistory();
   const classes = useStyles();
 
   const [name, setName] = useState("");
@@ -93,9 +95,22 @@ export default function Editor() {
   };
 
   const handleSubmit = event => {
-    let formData = { name, notes, ingredients, instructions };
+    let data = { name, notes, ingredients, instructions };
+
+    console.log(JSON.stringify(data))
     event.preventDefault();
-    console.log(formData);
+    fetch("/api/recipes", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    }).then(res =>
+      res.text().then(recipeId => {
+        recipeId = recipeId.slice(1, -1);
+        history.push(`/recipes/${recipeId}`);
+      })
+    );
+
+    console.log(data);
   };
 
   return (
@@ -115,6 +130,7 @@ export default function Editor() {
                     <Grid item xs={12}>
                       <TextField
                         fullWidth
+                        required
                         label="Recipe Name"
                         variant="outlined"
                         value={name}
@@ -124,6 +140,7 @@ export default function Editor() {
                     <Grid item xs={12}>
                       <TextField
                         fullWidth
+                        required
                         label="Additional Notes"
                         variant="outlined"
                         value={notes}
@@ -151,6 +168,7 @@ export default function Editor() {
                       >
                         <Grid item xs={4} md={2}>
                           <TextField
+                            required
                             fullWidth
                             type="number"
                             variant="outlined"
@@ -170,7 +188,9 @@ export default function Editor() {
                         </Grid>
                         <Grid item xs={8} md={3}>
                           <TextField
+                            required
                             fullWidth
+                            required
                             variant="outlined"
                             label="Name"
                             value={ingredient.name}
@@ -215,7 +235,9 @@ export default function Editor() {
                             <Grid item xs={8}>
                               <TextField
                                 fullWidth
+                                required
                                 variant="outlined"
+                                label={`Step ${idx + 1}`}
                                 value={instruction}
                                 onChange={handleInstructionChange(idx)}
                               />
