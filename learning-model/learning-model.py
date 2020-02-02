@@ -3,6 +3,7 @@ import requests
 import csv
 import re
 import random
+import pprint
 import copy
 from collections import defaultdict
 BACKEND_URL = os.environ.get("BACKEND_URL") or "localhost:3000"
@@ -269,8 +270,9 @@ if __name__ == "__main__":
     example = {"recipe": porkChop, "rating": 5}
     recipeVariations = createRecipeVariations(example, 100)
 
-     
-    print(calculateNewMasterRecipe(recipeVariations))
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint(calculateNewMasterRecipe(recipeVariations))
+    #  print(calculateNewMasterRecipe(recipeVariations))
     #changeRecipe()
 # print(recipeVariations)
 #newRecipe = calculateNewMasterRecipe(recipeVariations)
