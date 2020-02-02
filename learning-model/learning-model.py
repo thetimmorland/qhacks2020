@@ -45,7 +45,7 @@ def changeRecipe():
                 "Reduce heat to medium and continue cooking for 9 minutes, flipping the chops every minute",
                 "Remove the pan from the stove, add butter, garlic, and thyme, basting the pork chops",
                 "Let the porkchops rest in the pan for 5 minutes",
-         s   ],}
+            ],}
     test = {"recipe":porkchop,"rating":5}
     requests.post(BACKEND_URL + "/api/ratings/" + x, data=test)
     for x in recipesID:
