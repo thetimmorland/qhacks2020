@@ -3,6 +3,7 @@ import requests
 import csv
 import re
 import random
+import pprint
 import copy
 from collections import defaultdict
 BACKEND_URL = os.environ.get("BACKEND_URL") or "localhost:3000"
@@ -16,7 +17,7 @@ def copyArrOfDict(x):
     return cpy_list
 
 
-def addRecipe():
+def changeRecipe():
     r = requests.get(BACKEND_URL + "/api/recipes")
     recipesID = r.json()
     for x in recipesID:
@@ -174,7 +175,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
         za = random.random()
         if (za > 0.33):
             index = random.randint(0,(len(recipeIngredients))-1)
-            while( recipeIngredients[index]["unit"]==""):
+            while( recipeIngredients[index]["unit"]=="" or recipeIngredients[index]["unit"][0]==" " ):
                 index = random.randint(0,(len(recipeIngredients))-1)
             if(index==2):
                 ratingChange = 1
@@ -225,13 +226,13 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
 
         finalObject = {}
         finalObject["recipe"] = temporaryRecipe
-        if ratingChange == 0:
-            finalObject["rating"] = 3
-        elif ratingChange==-1:
-            finalObject["rating"] = 1
-        else:
-            finalObject["rating"] = 5
-        # finalObject["rating"] = random.randint(0,5)
+        # if ratingChange == 0:
+        #     finalObject["rating"] = 3
+        # elif ratingChange==-1:
+        #     finalObject["rating"] = 1
+        # else:
+        #     finalObject["rating"] = 5
+        finalObject["rating"] = random.randint(0,5)
 
         allVariations.append(finalObject)
 
@@ -241,46 +242,38 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
 # end createRecipeVariations
 
 if __name__ == "__main__":
-    ex = {
-        "name":
-        "Cake",
-        'notes':
-        "This recipe is very good. I make it all the time with my kids!",
-        'ingredients': [
-            {
-                "name": "Eggs",
-                "amount": 20,
-                "unit": ""
-            },
-            {
-                "name": "Flour",
-                "amount": 20,
-                "unit": "Cups"
-            },
-            {
-                "name": "Sugar",
-                "amount": 20,
-                "unit": "Cups"
-            },
-            {
-                "name": "Baking Soda",
-                "amount": 20,
-                "unit": "Teaspoons"
-            },
-        ],
-        "instructions": [
-            "Add flour.",
-            "Create well in flour.",
-            "Crack egg in well.",
-            "heat oven to 200.0 C",
-            "cook for 20.0 min",
-        ],
-    }
-    example = {"recipe": ex, "rating": 5}
-    recipeVariations = createRecipeVariations(example, 10)
+    porkChop = {
 
-    newRecipe = calculateNewMasterRecipe(recipeVariations)
-    print(calculateNewMasterRecipe(recipeVariations))
+        "name"  :   "Pork Chop",
+            "notes" :   "Yummy yummy in my tummy",
+            "ingredients"   :  [
+                {"name" : "salt", "amount": 118, "unit": "ml"},
+                {"name" : "water", "amount": 710, "unit": "ml"},
+                {"name" : "pork chops", "amount": 2, "unit": ""},
+                {"name" : "brown sugar", "amount": 60, "unit": "ml"},
+                {"name" : "butter", "amount": 30, "unit": "ml"},
+                {"name" : "thyme", "amount": 4, "unit": " sprigs"},
+                {"name" : "garlic", "amount": 2, "unit": "cloves"},
+            ],
+            "instructions": [
+                "Tenderize porkchops with a fork",
+                "Place salt, sugar, and water in a plastic bag and stire until mixed",
+                "Put porkchops in bag, and let marinate for 30 minutes",
+                "Remove porkchops from bag and dry with paper towel",
+                "Heat pan to medium high heat",
+                "Cook on each side for 1 minute",
+                "Reduce heat to medium and continue cooking for 9 minutes, flipping the chops every minute",
+                "Remove the pan from the stove, add butter, garlic, and thyme, basting the pork chops",
+                "Let the porkchops rest in the pan for 5 minutes",
+            ],
+}
+    example = {"recipe": porkChop, "rating": 5}
+    recipeVariations = createRecipeVariations(example, 100)
+
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint(calculateNewMasterRecipe(recipeVariations))
+    #  print(calculateNewMasterRecipe(recipeVariations))
+    #changeRecipe()
 # print(recipeVariations)
 #newRecipe = calculateNewMasterRecipe(recipeVariations)
 # print(newRecipe)
