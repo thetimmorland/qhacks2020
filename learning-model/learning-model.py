@@ -65,7 +65,7 @@ def setupRecipe():
     r = requests.get(BACKEND_URL + "/api/recipes")
     recipesID = r.json()
     for x in recipesID:
-        createRecipeVariations(requests.get(BACKEND_URL + "/api/ratings"+str(x))["recipes"], 500,str(x))
+        createRecipeVariations(requests.get(BACKEND_URL + "/api/ratings/"+str(x))["recipes"], 5,str(x))
         
 
 
@@ -294,7 +294,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations,ID):
                 finalObject["rating"] = 5
         else:
             finalObject["rating"] = random.randint(0,5)
-        requests.post(BACKEND_URL + "/api/ratings/" + ID, json=finalObject)
+        r = requests.post(BACKEND_URL + "/api/ratings/" + ID, json=finalObject)
         allVariations.append(finalObject)
 
     return allVariations
@@ -305,6 +305,6 @@ def createRecipeVariations(exampleRecipe, numberOfVariations,ID):
 if __name__ == "__main__":
 
     #while True:
-        changeRecipe()
+        setupRecipe()
         time.sleep(5)
 
