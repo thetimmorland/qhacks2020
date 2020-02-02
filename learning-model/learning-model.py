@@ -5,6 +5,7 @@ import re
 import random
 import pprint
 import copy
+import time
 from collections import defaultdict
 BACKEND_URL = os.environ.get("BACKEND_URL") or "localhost:3000"
 
@@ -23,6 +24,8 @@ def changeRecipe():
     for x in recipesID:
         r = requests.get(BACKEND_URL + "/api/ratings/" + x)
         master = calculateNewMasterRecipe(r.json())
+        pp = pprint.PrettyPrinter(indent=4)
+        pp.pprint(master)
         requests.post(BACKEND_URL + "/api/ratings/" + x, data=master)
 
 
@@ -270,10 +273,13 @@ if __name__ == "__main__":
     example = {"recipe": porkChop, "rating": 5}
     recipeVariations = createRecipeVariations(example, 500)
 
-    pp = pprint.PrettyPrinter(indent=4)
-    pp.pprint(calculateNewMasterRecipe(recipeVariations))
+    #pp = pprint.PrettyPrinter(indent=4)
+    #pp.pprint(calculateNewMasterRecipe(recipeVariations))
     #  print(calculateNewMasterRecipe(recipeVariations))
-    #changeRecipe()
+    while True:
+        changeRecipe()
+        time.sleep(5)
+
 # print(recipeVariations)
 #newRecipe = calculateNewMasterRecipe(recipeVariations)
 # print(newRecipe)
