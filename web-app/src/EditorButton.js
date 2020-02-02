@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
@@ -21,7 +21,12 @@ export default function EditorButton() {
   };
 
   return (
-    <Fab size="large" color="secondary" onClick={handleClick} className={classes.fab}>
+    <Fab
+      size="large"
+      color="secondary"
+      onClick={handleClick}
+      className={classes.fab}
+    >
       <AddIcon />
     </Fab>
   );

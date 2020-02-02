@@ -1,19 +1,18 @@
 import {
   Box,
+  Collapse,
   Container,
   Grid,
   Paper,
-  Typography,
-  Collapse
+  Typography
 } from "@material-ui/core";
-import { Rating, Alert, AlertTitle } from "@material-ui/lab";
+import { Alert, AlertTitle, Rating } from "@material-ui/lab";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import TopBar from "./TopBar";
-import Loading from "./Loading";
 import EditorButton from "./EditorButton";
-import StarRating from "./StarRating";
+import Loading from "./Loading";
+import TopBar from "./TopBar";
 
 export default function Recipe() {
   let { recipeId } = useParams();
