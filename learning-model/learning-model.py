@@ -58,6 +58,14 @@ def changeRecipe():
         pp.pprint(master)
         requests.post(BACKEND_URL + "/api/ratings/" + str(x), json=master)
 
+def setupRecipe():
+    
+    r = requests.get(BACKEND_URL + "/api/recipes")
+    recipesID = r.json()
+    for x in recipesID:
+        createRecipeVariations(requests.get(BACKEND_URL + "/api/ratings"+str(x))["recipes"], 500,str(x))
+        
+
 
 # end addRecipe
 
@@ -199,7 +207,7 @@ def calculateNewMasterRecipe(recipeVariations):
     # end calculateNewMasterRecipe
 
 
-def createRecipeVariations(exampleRecipe, numberOfVariations):
+def createRecipeVariations(exampleRecipe, numberOfVariations,ID):
     changingRange = 1
     recipeIngredients = exampleRecipe["recipe"]["ingredients"]
     recipeInstructions = getTempAndTime(
@@ -221,10 +229,11 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
             index = random.randint(0,(len(recipeIngredients))-1)
             while( recipeIngredients[index]["unit"]=="" or recipeIngredients[index]["unit"][0]==" " ):
                 index = random.randint(0,(len(recipeIngredients))-1)
-            if(index==2):
-                ratingChange = 1
-        else:
-            index = -1
+            if (len(recipeIngredients))-1>=2:    
+                if(index==2):
+                    ratingChange = 1
+                else:
+                    index = -1
         for ingredientIndex in range(len(recipeIngredients)):
             try:
                 int(recipeIngredients[ingredientIndex]["amount"])
@@ -274,14 +283,16 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
 
         finalObject = {}
         finalObject["recipe"] = temporaryRecipe
-        # if ratingChange == 0:
-        #     finalObject["rating"] = 3
-        # elif ratingChange==-1:
-        #     finalObject["rating"] = 1
-        # else:
-        #     finalObject["rating"] = 5
-        finalObject["rating"] = random.randint(0,5)
-
+        if (len(recipeIngredients))-1>=2:
+            if ratingChange == 0:
+                finalObject["rating"] = 3
+            elif ratingChange==-1:
+                finalObject["rating"] = 1
+            else:
+                finalObject["rating"] = 5
+        else:
+            finalObject["rating"] = random.randint(0,5)
+        requests.post(BACKEND_URL + "/api/ratings/" + ID, json=finalObject)
         allVariations.append(finalObject)
 
     return allVariations
