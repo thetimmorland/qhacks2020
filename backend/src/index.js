@@ -102,7 +102,6 @@ app.put("/api/recipes/:recipeId", (req, res) => {
 
 app.post("/api/ratings/:recipeId", (req, res) => {
   let rating = { recipeId: req.params.recipeId, ...req.body };
-  console.log(rating);
 
   client
     .connect()
@@ -112,7 +111,7 @@ app.post("/api/ratings/:recipeId", (req, res) => {
         .collection("ratings")
         .insertOne(rating)
         .then(rating => {
-          res.send(rating.insertedId.toHexString).status(200);
+          res.send(rating.insertedId).status(200);
         })
         .catch(err => {
           res.send(err).status(500);

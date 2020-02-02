@@ -3,18 +3,22 @@ import {
   Container,
   Grid,
   Paper,
-  Typography
+  Typography,
+  Collapse
 } from "@material-ui/core";
-import { Rating } from '@material-ui/lab';
+import { Rating, Alert, AlertTitle } from "@material-ui/lab";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import TopBar from "./TopBar";
-import Loading from "./Loading"
+import Loading from "./Loading";
+import EditorButton from "./EditorButton";
+import StarRating from "./StarRating";
 
 export default function Recipe() {
   let { recipeId } = useParams();
   const [recipe, setRecipe] = useState();
+  const [didRate, setDidRate] = useState(false);
 
   useEffect(() => {
     axios
@@ -27,19 +31,45 @@ export default function Recipe() {
       });
   }, []);
 
+  const handleRating = event => {
+    axios
+      .post(`/api/ratings/${recipeId}`, { recipe, rating: event.target.value })
+      .then(() => {
+        setDidRate(true);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   if (recipe) {
     return (
       <>
         <TopBar>
-          <Rating name="size-large" defaultValue={2} size="large" />
+          <Rating
+            size="large"
+            defaultValue="5"
+            onChange={handleRating}
+            disabled={didRate}
+          />
         </TopBar>
         <Box p={2}>
           <Container maxWidth="md">
             <Grid container direction="column" spacing={2}>
+              <Collapse in={didRate}>
+                <Grid item>
+                  <Box p={2}>
+                    <Alert severity="success">
+                      <AlertTitle>Success</AlertTitle>
+                      Thanks for Rating!
+                    </Alert>
+                  </Box>
+                </Grid>
+              </Collapse>
               <Grid item>
                 <Paper>
                   <Box p={2}>
-                    <Typography variant="h4" color="primary" gutterBottom>
+                    <Typography variant="h5" color="primary" gutterBottom>
                       {recipe.name}
                     </Typography>
                     <Container maxWidth="md">
@@ -56,9 +86,9 @@ export default function Recipe() {
                     </Typography>
                     <Container maxWidth="md">
                       <ul>
-                        <Grid container>
+                        <Grid container direction="column">
                           {recipe.ingredients.map((ingredient, idx) => (
-                            <Grid key={idx} item xs={12} sm={6}>
+                            <Grid key={idx} item>
                               <Typography variant="h6">
                                 <li>
                                   {ingredient.amount} {ingredient.unit}{" "}
@@ -76,7 +106,7 @@ export default function Recipe() {
               <Grid item>
                 <Paper>
                   <Box p={2}>
-                    <Typography variant="h5" color="primary">
+                    <Typography variant="h5" color="primary" gutterBottom>
                       Instructions
                     </Typography>
                     <Container maxWidth="md">
@@ -98,6 +128,7 @@ export default function Recipe() {
             </Grid>
           </Container>
         </Box>
+        <EditorButton />
       </>
     );
   } else {
