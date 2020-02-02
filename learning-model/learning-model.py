@@ -21,8 +21,8 @@ def copyArrOfDict(x):
 
 def changeRecipe():
     
-    #r = requests.get(BACKEND_URL + "/api/recipes")
-    #recipesID = r.json()
+    r = requests.get(BACKEND_URL + "/api/recipes")
+    recipesID = r.json()
     porkChop = {
 
         "name"  :   "Pork Chop",
@@ -47,25 +47,27 @@ def changeRecipe():
                 "Remove the pan from the stove, add butter, garlic, and thyme, basting the pork chops",
                 "Let the porkchops rest in the pan for 5 minutes",
             ],}
-    test = {"recipe":porkChop,"rating":5}
+   # test = {"recipe":porkChop,"rating":5}
     
     #requests.post(BACKEND_URL + "/api/recipes/" + str(recipesID[0]), json=porkChop)
-    r = requests.post(BACKEND_URL + "/api/recipes/", json=porkChop)
-    gghj=0
-    # for x in recipesID:
-    #     r = requests.get(BACKEND_URL + "/api/ratings/" + str(x))
-    #     print(r.json())
-    #     master = calculateNewMasterRecipe(r.json())
-    #     pp = pprint.PrettyPrinter(indent=4)
-    #     pp.pprint(master)
-    #     requests.post(BACKEND_URL + "/api/ratings/" + str(x), json=master)
+    #r = requests.post(BACKEND_URL + "/api/recipes/", json=porkChop)
+    
+    for x in recipesID:
+        r = requests.get(BACKEND_URL + "/api/ratings/" + str(x))
+        print(r.json())
+        master = calculateNewMasterRecipe(r.json())
+        pp = pprint.PrettyPrinter(indent=4)
+        pp.pprint(master)
+        requests.post(BACKEND_URL + "/api/ratings/" + str(x), json=master)
 
 def setupRecipe():
     
     r = requests.get(BACKEND_URL + "/api/recipes")
     recipesID = r.json()
     for x in recipesID:
-        createRecipeVariations(requests.get(BACKEND_URL + "/api/ratings"+str(x))["recipes"], 500,str(x))
+        placeHolder = requests.get(BACKEND_URL + "/api/ratings/" + str(x))
+        placeHolderJson = placeHolder.json()
+        createRecipeVariations(requests.get(BACKEND_URL + "/api/ratings/"+str(x))["recipes"].json(), 5,str(x))
         
 
 
@@ -294,7 +296,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations,ID):
                 finalObject["rating"] = 5
         else:
             finalObject["rating"] = random.randint(0,5)
-        requests.post(BACKEND_URL + "/api/ratings/" + ID, json=finalObject)
+        r = requests.post(BACKEND_URL + "/api/ratings/" + ID, json=finalObject)
         allVariations.append(finalObject)
 
     return allVariations
@@ -304,7 +306,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations,ID):
 
 if __name__ == "__main__":
 
-    #while True:
+    while True:
         changeRecipe()
         time.sleep(5)
 
