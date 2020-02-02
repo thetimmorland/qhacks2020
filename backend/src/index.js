@@ -44,10 +44,9 @@ app.get("/api/recipes", (req, res) => {
         .limit(100)
         .toArray()
         .then(recipes => {
-          assert.equal(null, err);
           let recipeIds = [];
           recipes.map(recipe => {
-            recipeIds.push(recipe._id.toHexString);
+            recipeIds.push(recipe._id);
           });
           res.send(recipeIds).status(200);
         })
