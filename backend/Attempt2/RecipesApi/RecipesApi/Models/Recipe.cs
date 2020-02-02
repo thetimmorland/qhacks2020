@@ -13,13 +13,9 @@ namespace RecipesApi.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-
         [BsonElement("Name")]
         public string RecipeName { get; set; }
-
         public string Notes { get; set; }
-
-        //public Ingredients Ingredients { get; set; }
         public IList<Ingredients> Ingredients { get; set; }
         public int Rating { get; set; }
     }
