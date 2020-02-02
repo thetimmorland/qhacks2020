@@ -20,6 +20,7 @@ def copyArrOfDict(x):
 
 
 def changeRecipe():
+    
     r = requests.get(BACKEND_URL + "/api/recipes")
     recipesID = r.json()
     porkChop = {
@@ -45,15 +46,17 @@ def changeRecipe():
                 "Reduce heat to medium and continue cooking for 9 minutes, flipping the chops every minute",
                 "Remove the pan from the stove, add butter, garlic, and thyme, basting the pork chops",
                 "Let the porkchops rest in the pan for 5 minutes",
-         s   ],}
-    test = {"recipe":porkchop,"rating":5}
-    requests.post(BACKEND_URL + "/api/ratings/" + x, data=test)
+            ],}
+    test = {"recipe":porkChop,"rating":5}
+    
+    requests.post(BACKEND_URL + "/api/ratings/" + str(recipesID[0]), json=test)
     for x in recipesID:
         r = requests.get(BACKEND_URL + "/api/ratings/" + str(x))
+        print(r.json())
         master = calculateNewMasterRecipe(r.json())
         pp = pprint.PrettyPrinter(indent=4)
         pp.pprint(master)
-        requests.post(BACKEND_URL + "/api/ratings/" + x, data=master)
+        requests.post(BACKEND_URL + "/api/ratings/" + str(x), json=master)
 
 
 # end addRecipe
