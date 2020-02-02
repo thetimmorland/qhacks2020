@@ -1,26 +1,25 @@
 const MongoClient = require("mongodb").MongoClient;
 const ObjectId = require("mongodb").ObjectId;
-const uri = process.env.DB_URI || "mongodb://localhost:27017";
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-console.log(uri);
-
-// const client = new MongoClient(url, { useNewUrlParser: true });
-// const dbName = "recipes";
+const uri = process.env.DB_URI;
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 const express = require("express");
 
-const port = 3000;
+const port = 4000;
 const app = express();
 app.use(express.json());
 
 app.post("/api/recipes", (req, res) => {
   client.connect((err, client) => {
-    let db = client.db("autochef");
-    db.collection("recipes").insertOne(req.body);
-    client.close();
+    const db = client.db("autochef");
+    db.collection("recipes").insertOne(req.body, (err, r) => {
+      res.send(r.insertedId).status(200);
+      client.close();
+    });
   });
-
-  res.sendStatus(200);
 });
 
 app.get("/api/recipes", (req, res) => {
@@ -34,7 +33,6 @@ app.get("/api/recipes", (req, res) => {
         docs.map(doc => {
           id.push(doc._id);
         });
-
         res.send(id).status(200);
       });
   });
@@ -65,7 +63,7 @@ app.put("/api/recipes/:recipeId", (req, res) => {
 
 app.post("/api/ratings/:recipeId", (req, res) => {
   let rating = { recipeId: req.params.recipeId, ...req.body };
-  console.log(rating)
+  console.log(rating);
 
   client.connect((err, client) => {
     const db = client.db("autochef");
@@ -87,4 +85,4 @@ app.get("/api/ratings/:recipeId", (req, res) => {
   });
 });
 
-app.listen(port);
+app.listen(port, () => console.log(`Listening on port ${port}`));
