@@ -24,14 +24,15 @@ export default function Recipe() {
           <Grid item>
             <Paper>
               <Box p={2}>
-                <Typography>{recipe.Name}</Typography>
-                <Typography>{recipe.Notes}</Typography>
+                <Typography>{recipe.name}</Typography>
+                <Typography>{recipe.notes}</Typography>
               </Box>
             </Paper>
           </Grid>
           <Grid item>
             <Paper>
               <Box p={2}>
+                <ul>
                 <Grid container>
                   {recipe.ingredients.map((ingredient, idx) => (
                     <Grid key={idx} item xs={12} sm={6}>
@@ -43,12 +44,14 @@ export default function Recipe() {
                     </Grid>
                   ))}
                 </Grid>
+                </ul>
               </Box>
             </Paper>
           </Grid>
           <Grid item>
-            <Paper header="Instructions" variant="h6">
+            <Paper>
               <Box p={2}>
+              <Typography>Ingredients</Typography>
                 <ol>
                   {recipe.instructions.map((instruction, idx) => (
                     <Typography key={idx}>
