@@ -1,19 +1,18 @@
-import React, { useState } from "react";
-
 import {
+  Box,
   Button,
   Container,
-  Box,
-  Paper,
   Grid,
+  Paper,
   TextField,
   Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
+import axios from "axios";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-
 import TopBar from "./TopBar";
 
 const useStyles = makeStyles(theme => ({
@@ -95,22 +94,15 @@ export default function Editor() {
   };
 
   const handleSubmit = event => {
-    let data = { name, notes, ingredients, instructions };
-
-    console.log(JSON.stringify(data))
     event.preventDefault();
-    fetch("/api/recipes", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    }).then(res =>
-      res.text().then(recipeId => {
-        recipeId = recipeId.slice(1, -1);
-        history.push(`/recipes/${recipeId}`);
+    axios
+      .post("/api/recipes", { name, notes, ingredients, instructions })
+      .then(res => {
+        history.push(`/recipes/${res.data}`);
       })
-    );
-
-    console.log(data);
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   return (
