@@ -5,7 +5,8 @@ import {
   CssBaseline,
   Grid,
   Toolbar,
-  Typography
+  Typography,
+  MenuItem,
 } from "@material-ui/core";
 
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
@@ -16,11 +17,9 @@ export default function TopBar({ children }) {
       <Toolbar>
         <Grid container justify="space-between">
           <Grid item>
-            <Link style={{ textDecoration: "none" }} to="/">
-              <Typography variant="h6" color="textPrimary">
+              <MenuItem component={Link} to="/" >
                 AutoChef
-              </Typography>
-            </Link>
+              </MenuItem>
           </Grid>
           <Grid item>{children}</Grid>
         </Grid>

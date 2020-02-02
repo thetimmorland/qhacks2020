@@ -1,27 +1,27 @@
-import React from "react";
-import TopBar from "./TopBar";
-
-import {
-  AppBar,
-  Button,
-  CssBaseline,
-  Grid,
-  Toolbar,
-  Typography
-} from "@material-ui/core";
-
-import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
+import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
+import Loading from "./Loading";
+import axios from "axios";
 
 export default function Catalog() {
-  return (
-    <>
-      <TopBar title="AutoChef">
-        <Link style={{ textDecoration: "none" }} to="/editor">
-          <Button variant="contained" color="secondary">
-            Create
-          </Button>
-        </Link>
-      </TopBar>
-    </>
+  const [randomRecipeId, setRandomRecipeId] = useState("");
+
+  useState(() => {
+    axios
+      .get("/api/recipes")
+      .then(res => {
+        setRandomRecipeId(
+          res.data[Math.floor(Math.random() * res.data.length)]
+        );
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  });
+
+  return randomRecipeId ? (
+    <Redirect to={`/recipes/${randomRecipeId}`} />
+  ) : (
+    <Loading />
   );
 }
