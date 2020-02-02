@@ -302,7 +302,7 @@ def createRecipeVariations(exampleRecipe, numberOfVariations,ID):
 
 if __name__ == "__main__":
 
-    while True:
+    #while True:
         changeRecipe()
         time.sleep(5)
 

@@ -10,7 +10,11 @@ export default function Recipe() {
   const [recipe, setRecipe] = useState();
 
   useEffect(async () => {
-    const recipe = await fetch(`/api/recipes/${recipeId}`).then(response => {
+    const recipe = await fetch(`/api/recipes/${recipeId}`, {
+      headers: {
+        "Connection": "keep-alive"
+      }
+    }).then(response => {
       return response.json();
     });
     console.log(recipe);
@@ -24,31 +28,34 @@ export default function Recipe() {
           <Grid item>
             <Paper>
               <Box p={2}>
-                <Typography>{recipe.Name}</Typography>
-                <Typography>{recipe.Notes}</Typography>
+                <Typography>{recipe.name}</Typography>
+                <Typography>{recipe.notes}</Typography>
               </Box>
             </Paper>
           </Grid>
           <Grid item>
             <Paper>
               <Box p={2}>
-                <Grid container>
-                  {recipe.ingredients.map((ingredient, idx) => (
-                    <Grid key={idx} item xs={12} sm={6}>
-                      <Typography>
-                        <li>
-                          {ingredient.amount} {ingredient.unit} {ingredient.name}
-                        </li>
-                      </Typography>
-                    </Grid>
-                  ))}
-                </Grid>
+                <ul>
+                  <Grid container>
+                    {recipe.ingredients.map((ingredient, idx) => (
+                      <Grid key={idx} item xs={12} sm={6}>
+                        <Typography>
+                          <li>
+                            {ingredient.amount} {ingredient.unit} {ingredient.name}
+                          </li>
+                        </Typography>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </ul>
               </Box>
             </Paper>
           </Grid>
           <Grid item>
-            <Paper header="Instructions" variant="h6">
+            <Paper>
               <Box p={2}>
+                <Typography>Ingredients</Typography>
                 <ol>
                   {recipe.instructions.map((instruction, idx) => (
                     <Typography key={idx}>
