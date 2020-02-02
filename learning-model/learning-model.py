@@ -268,7 +268,7 @@ if __name__ == "__main__":
             ],
 }
     example = {"recipe": porkChop, "rating": 5}
-    recipeVariations = createRecipeVariations(example, 100)
+    recipeVariations = createRecipeVariations(example, 500)
 
     pp = pprint.PrettyPrinter(indent=4)
     pp.pprint(calculateNewMasterRecipe(recipeVariations))
