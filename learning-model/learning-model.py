@@ -21,12 +21,12 @@ def copyArrOfDict(x):
 
 def changeRecipe():
     
-    r = requests.get(BACKEND_URL + "/api/recipes")
-    recipesID = r.json()
+    #r = requests.get(BACKEND_URL + "/api/recipes")
+    #recipesID = r.json()
     porkChop = {
 
         "name"  :   "Pork Chop",
-            "notes" :   "Yummy yummy in my tummy",
+            "notes" :   "Pan Fried Pork Chop",
             "ingredients"   :  [
                 {"name" : "salt", "amount": 118, "unit": "ml"},
                 {"name" : "water", "amount": 710, "unit": "ml"},
@@ -49,14 +49,16 @@ def changeRecipe():
             ],}
     test = {"recipe":porkChop,"rating":5}
     
-    requests.post(BACKEND_URL + "/api/ratings/" + str(recipesID[0]), json=test)
-    for x in recipesID:
-        r = requests.get(BACKEND_URL + "/api/ratings/" + str(x))
-        print(r.json())
-        master = calculateNewMasterRecipe(r.json())
-        pp = pprint.PrettyPrinter(indent=4)
-        pp.pprint(master)
-        requests.post(BACKEND_URL + "/api/ratings/" + str(x), json=master)
+    #requests.post(BACKEND_URL + "/api/recipes/" + str(recipesID[0]), json=porkChop)
+    r = requests.post(BACKEND_URL + "/api/recipes/", json=porkChop)
+    gghj=0
+    # for x in recipesID:
+    #     r = requests.get(BACKEND_URL + "/api/ratings/" + str(x))
+    #     print(r.json())
+    #     master = calculateNewMasterRecipe(r.json())
+    #     pp = pprint.PrettyPrinter(indent=4)
+    #     pp.pprint(master)
+    #     requests.post(BACKEND_URL + "/api/ratings/" + str(x), json=master)
 
 def setupRecipe():
     
