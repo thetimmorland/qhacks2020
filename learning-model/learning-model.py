@@ -21,9 +21,9 @@ def changeRecipe():
     r = requests.get(BACKEND_URL + "/api/recipes")
     recipesID = r.json()
     for x in recipesID:
-        r = requests.get(BACKEND_URL + "/api/ratings/" + x)
+        r = requests.get(BACKEND_URL + "/api/ratings/" + str(x))
         master = calculateNewMasterRecipe(r.json())
-        requests.post(BACKEND_URL + "/api/ratings/" + x, data=master)
+        requests.post(BACKEND_URL + "/api/ratings/" + str(x), data=master)
 
 
 # end addRecipe
@@ -116,10 +116,14 @@ def calculateNewMasterRecipe(recipeVariations):
         change = False
         
         for num in range(len(ingredients)):
+            try:
+                int(ingredients[num]["amount"])
+            except:
+                ingredients[num]["amount"] = 0
             if ingredients[num]["amount"] != masterIngredients[num]["amount"]:
 
                 #variationDelta = ((ingredients[num]["amount"] - masterIngredients[num]["amount"]) *rating) / (ratingRange * numberOfVariations)
-                variationDelta = ((ingredients[num]["amount"] - masterIngredients[num]["amount"]) * rating)/ratingRange
+                variationDelta = ((int(ingredients[num]["amount"]) - int(masterIngredients[num]["amount"])) * rating)/ratingRange
                 numberOfIngredientVariations[num] += 1
                 sumOfIngredientVariations[num]["amount"] += variationDelta
                 
@@ -141,12 +145,13 @@ def calculateNewMasterRecipe(recipeVariations):
             masterInstructions[instruction] += sumOfInstructionVariations[instruction]/numberOfInstructionVariations[instruction]
         else:
             masterInstructions[instruction] += sumOfInstructionVariations[instruction]
-
+    value = 0
     for ingredient in range(len(sumOfIngredientVariations)):
         if numberOfIngredientVariations[ingredient]!=0:
-            masterIngredients[ingredient]["amount"] += sumOfIngredientVariations[ingredient]["amount"]/numberOfIngredientVariations[ingredient]
+            value += int(sumOfIngredientVariations[ingredient]["amount"])/numberOfIngredientVariations[ingredient]
         else:
-            masterIngredients[ingredient]["amount"] += sumOfIngredientVariations[ingredient]["amount"]
+            value += int(sumOfIngredientVariations[ingredient]["amount"])
+    masterIngredients[ingredient]["amount"] = str(value)
     masterRecipe["instructions"] = editInstructions(
         masterInstructions, masterRecipe["instructions"])
     masterRecipe["ingredients"] = masterIngredients
@@ -182,9 +187,13 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
         else:
             index = -1
         for ingredientIndex in range(len(recipeIngredients)):
+            try:
+                int(recipeIngredients[ingredientIndex]["amount"])
+            except:
+                recipeIngredients[ingredientIndex]["amount"] = "0"
             if (ingredientIndex == index):
                 multiple = (random.random() * changingRange + (1-(changingRange/2)))
-                amountToChange = recipeIngredients[ingredientIndex]["amount"] * multiple
+                amountToChange = int(recipeIngredients[ingredientIndex]["amount"]) * multiple
                 if multiple<1:
                     ratingChange = -1
 
@@ -247,13 +256,13 @@ if __name__ == "__main__":
         "name"  :   "Pork Chop",
             "notes" :   "Yummy yummy in my tummy",
             "ingredients"   :  [
-                {"name" : "salt", "amount": 118, "unit": "ml"},
-                {"name" : "water", "amount": 710, "unit": "ml"},
-                {"name" : "pork chops", "amount": 2, "unit": ""},
-                {"name" : "brown sugar", "amount": 60, "unit": "ml"},
-                {"name" : "butter", "amount": 30, "unit": "ml"},
-                {"name" : "thyme", "amount": 4, "unit": " sprigs"},
-                {"name" : "garlic", "amount": 2, "unit": "cloves"},
+                {"name" : "", "amount": "118", "unit": "ml"},
+                {"name" : "water", "amount": "", "unit": "ml"},
+                {"name" : "pork chops", "amount": "2", "unit": ""},
+                {"name" : "brown sugar", "amount": "60", "unit": "ml"},
+                {"name" : "butter", "amount": "30", "unit": "ml"},
+                {"name" : "thyme", "amount": "4", "unit": " sprigs"},
+                {"name" : "garlic", "amount": "2", "unit": "cloves"},
             ],
             "instructions": [
                 "Tenderize porkchops with a fork",
