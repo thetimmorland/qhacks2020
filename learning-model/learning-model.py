@@ -5,8 +5,10 @@ import re
 import random
 import pprint
 import copy
+import time
 from collections import defaultdict
-BACKEND_URL = os.environ.get("BACKEND_URL") or "localhost:3000"
+BACKEND_URL = os.environ.get("BACKEND_URL") or "http://localhost:3000"
+#BACKEND_URL = "http://localhost:3000"
 
 
 def copyArrOfDict(x):
@@ -20,9 +22,37 @@ def copyArrOfDict(x):
 def changeRecipe():
     r = requests.get(BACKEND_URL + "/api/recipes")
     recipesID = r.json()
+    porkChop = {
+
+        "name"  :   "Pork Chop",
+            "notes" :   "Yummy yummy in my tummy",
+            "ingredients"   :  [
+                {"name" : "salt", "amount": 118, "unit": "ml"},
+                {"name" : "water", "amount": 710, "unit": "ml"},
+                {"name" : "pork chops", "amount": 2, "unit": ""},
+                {"name" : "brown sugar", "amount": 60, "unit": "ml"},
+                {"name" : "butter", "amount": 30, "unit": "ml"},
+                {"name" : "thyme", "amount": 4, "unit": " sprigs"},
+                {"name" : "garlic", "amount": 2, "unit": " cloves"},
+            ],
+            "instructions": [
+                "Tenderize porkchops with a fork",
+                "Place salt, sugar, and water in a plastic bag and stire until mixed",
+                "Put porkchops in bag, and let marinate for 30 minutes",
+                "Remove porkchops from bag and dry with paper towel",
+                "Heat pan to medium high heat",
+                "Cook on each side for 1 minute",
+                "Reduce heat to medium and continue cooking for 9 minutes, flipping the chops every minute",
+                "Remove the pan from the stove, add butter, garlic, and thyme, basting the pork chops",
+                "Let the porkchops rest in the pan for 5 minutes",
+            ],}
+    test = {"recipe":porkchop,"rating":5}
+    requests.post(BACKEND_URL + "/api/ratings/" + x, data=test)
     for x in recipesID:
-        r = requests.get(BACKEND_URL + "/api/ratings/" + x)
+        r = requests.get(BACKEND_URL + "/api/ratings/" + str(x))
         master = calculateNewMasterRecipe(r.json())
+        pp = pprint.PrettyPrinter(indent=4)
+        pp.pprint(master)
         requests.post(BACKEND_URL + "/api/ratings/" + x, data=master)
 
 
@@ -70,7 +100,13 @@ def editInstructions(newTemps, recipeVar):
 
 def calculateNewMasterRecipe(recipeVariations):
     ratingRange = 5
+    
     numberOfVariations = len(recipeVariations)
+    
+    print(numberOfVariations)
+    if len(recipeVariations) == 0:
+        return
+    
     master = recipeVariations[0].copy()
     masterRecipe = master["recipe"].copy()
     masterIngredients = copyArrOfDict(masterRecipe["ingredients"])
@@ -116,10 +152,14 @@ def calculateNewMasterRecipe(recipeVariations):
         change = False
         
         for num in range(len(ingredients)):
+            try:
+                int(ingredients[num]["amount"])
+            except:
+                ingredients[num]["amount"] = 0
             if ingredients[num]["amount"] != masterIngredients[num]["amount"]:
 
                 #variationDelta = ((ingredients[num]["amount"] - masterIngredients[num]["amount"]) *rating) / (ratingRange * numberOfVariations)
-                variationDelta = ((ingredients[num]["amount"] - masterIngredients[num]["amount"]) * rating)/ratingRange
+                variationDelta = ((int(ingredients[num]["amount"]) - int(masterIngredients[num]["amount"])) * rating)/ratingRange
                 numberOfIngredientVariations[num] += 1
                 sumOfIngredientVariations[num]["amount"] += variationDelta
                 
@@ -141,12 +181,13 @@ def calculateNewMasterRecipe(recipeVariations):
             masterInstructions[instruction] += sumOfInstructionVariations[instruction]/numberOfInstructionVariations[instruction]
         else:
             masterInstructions[instruction] += sumOfInstructionVariations[instruction]
-
+    value = 0
     for ingredient in range(len(sumOfIngredientVariations)):
         if numberOfIngredientVariations[ingredient]!=0:
-            masterIngredients[ingredient]["amount"] += sumOfIngredientVariations[ingredient]["amount"]/numberOfIngredientVariations[ingredient]
+            value += int(sumOfIngredientVariations[ingredient]["amount"])/numberOfIngredientVariations[ingredient]
         else:
-            masterIngredients[ingredient]["amount"] += sumOfIngredientVariations[ingredient]["amount"]
+            value += int(sumOfIngredientVariations[ingredient]["amount"])
+    masterIngredients[ingredient]["amount"] = str(value)
     masterRecipe["instructions"] = editInstructions(
         masterInstructions, masterRecipe["instructions"])
     masterRecipe["ingredients"] = masterIngredients
@@ -182,9 +223,13 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
         else:
             index = -1
         for ingredientIndex in range(len(recipeIngredients)):
+            try:
+                int(recipeIngredients[ingredientIndex]["amount"])
+            except:
+                recipeIngredients[ingredientIndex]["amount"] = "0"
             if (ingredientIndex == index):
                 multiple = (random.random() * changingRange + (1-(changingRange/2)))
-                amountToChange = recipeIngredients[ingredientIndex]["amount"] * multiple
+                amountToChange = int(recipeIngredients[ingredientIndex]["amount"]) * multiple
                 if multiple<1:
                     ratingChange = -1
 
@@ -242,38 +287,8 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
 # end createRecipeVariations
 
 if __name__ == "__main__":
-    porkChop = {
 
-        "name"  :   "Pork Chop",
-            "notes" :   "Yummy yummy in my tummy",
-            "ingredients"   :  [
-                {"name" : "salt", "amount": 118, "unit": "ml"},
-                {"name" : "water", "amount": 710, "unit": "ml"},
-                {"name" : "pork chops", "amount": 2, "unit": ""},
-                {"name" : "brown sugar", "amount": 60, "unit": "ml"},
-                {"name" : "butter", "amount": 30, "unit": "ml"},
-                {"name" : "thyme", "amount": 4, "unit": " sprigs"},
-                {"name" : "garlic", "amount": 2, "unit": "cloves"},
-            ],
-            "instructions": [
-                "Tenderize porkchops with a fork",
-                "Place salt, sugar, and water in a plastic bag and stire until mixed",
-                "Put porkchops in bag, and let marinate for 30 minutes",
-                "Remove porkchops from bag and dry with paper towel",
-                "Heat pan to medium high heat",
-                "Cook on each side for 1 minute",
-                "Reduce heat to medium and continue cooking for 9 minutes, flipping the chops every minute",
-                "Remove the pan from the stove, add butter, garlic, and thyme, basting the pork chops",
-                "Let the porkchops rest in the pan for 5 minutes",
-            ],
-}
-    example = {"recipe": porkChop, "rating": 5}
-    recipeVariations = createRecipeVariations(example, 500)
+    while True:
+        changeRecipe()
+        time.sleep(5)
 
-    pp = pprint.PrettyPrinter(indent=4)
-    pp.pprint(calculateNewMasterRecipe(recipeVariations))
-    #  print(calculateNewMasterRecipe(recipeVariations))
-    #changeRecipe()
-# print(recipeVariations)
-#newRecipe = calculateNewMasterRecipe(recipeVariations)
-# print(newRecipe)
