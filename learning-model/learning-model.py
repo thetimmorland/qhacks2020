@@ -142,8 +142,10 @@ def calculateNewMasterRecipe(recipeVariations):
             masterInstructions[instruction] += sumOfInstructionVariations[instruction]
 
     for ingredient in range(len(sumOfIngredientVariations)):
-        masterIngredients[ingredient]["amount"] += sumOfIngredientVariations[ingredient]["amount"]/numberOfIngredientVariations[ingredient]
-
+        if numberOfIngredientVariations[ingredient]!=0:
+            masterIngredients[ingredient]["amount"] += sumOfIngredientVariations[ingredient]["amount"]/numberOfIngredientVariations[ingredient]
+        else:
+            masterIngredients[ingredient]["amount"] += sumOfIngredientVariations[ingredient]["amount"]
     masterRecipe["instructions"] = editInstructions(
         masterInstructions, masterRecipe["instructions"])
     masterRecipe["ingredients"] = masterIngredients
@@ -172,12 +174,13 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
         za = random.random()
         if (za > 0.33):
             index = random.randint(0,(len(recipeIngredients))-1)
+            while( recipeIngredients[index]["unit"]==""):
+                index = random.randint(0,(len(recipeIngredients))-1)
             if(index==2):
                 ratingChange = 1
         else:
             index = -1
         for ingredientIndex in range(len(recipeIngredients)):
-            #count += 1
             if (ingredientIndex == index):
                 multiple = (random.random() * changingRange + (1-(changingRange/2)))
                 amountToChange = recipeIngredients[ingredientIndex]["amount"] * multiple
@@ -205,7 +208,6 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
                     "unit":
                     recipeIngredients[ingredientIndex]["unit"]
                 })
-
         if (za <= 0.33):
             index = random.randint(0,len(recipeInstructions)-1)
         else:
