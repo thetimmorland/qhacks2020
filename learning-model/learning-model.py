@@ -3,6 +3,7 @@ import requests
 import csv
 import re
 import random
+import pprint
 import copy
 from collections import defaultdict
 BACKEND_URL = os.environ.get("BACKEND_URL") or "localhost:3000"
@@ -16,7 +17,7 @@ def copyArrOfDict(x):
     return cpy_list
 
 
-def addRecipe():
+def changeRecipe():
     r = requests.get(BACKEND_URL + "/api/recipes")
     recipesID = r.json()
     for x in recipesID:
@@ -32,7 +33,7 @@ def getTempAndTime(recipeVar):
     temps = []
     values = []
     for string in recipeVar:
-        values += re.findall(r"[-+]?\d*\.\d+|\d+", string)
+        values += re.findall(r"[-+]?\d*\.\d+|\d+", string)#find all numbers in the string
     if not values:
         temps[0] = -1
     for x in range(len(values)):
@@ -41,8 +42,6 @@ def getTempAndTime(recipeVar):
         except:
             print("error not a float")
     return values
-
-
 # end getTempAndTime
 
 
@@ -72,7 +71,6 @@ def editInstructions(newTemps, recipeVar):
 def calculateNewMasterRecipe(recipeVariations):
     ratingRange = 5
     numberOfVariations = len(recipeVariations)
-    # print(recipeVariations[0])
     master = recipeVariations[0].copy()
     masterRecipe = master["recipe"].copy()
     masterIngredients = copyArrOfDict(masterRecipe["ingredients"])
@@ -94,7 +92,6 @@ def calculateNewMasterRecipe(recipeVariations):
 
     # get master ingredient list
 
-    # print(masterIngredients)
 
     for ingredientIndex in range(
             len(sumOfIngredientVariations)):  # looping through an array of dict
@@ -109,9 +106,7 @@ def calculateNewMasterRecipe(recipeVariations):
     # need to fix first for loop, variation in recipeVariations has issue whether it is the value, or key
     for variation in recipeVariations:
 
-        #recipeVariation = variation["recipe"]
-        #ingredients = recipeVariation["ingredients"]
-        #rating = variation["rating"]
+   
 
         ingredients = copyArrOfDict(variation["recipe"]['ingredients'])
         # print(ingredients)
@@ -119,8 +114,7 @@ def calculateNewMasterRecipe(recipeVariations):
 
         instruction = getTempAndTime(variation["recipe"]["instructions"])
         change = False
-        # print(ingredients)
-        # print(masterIngredients)
+        
         for num in range(len(ingredients)):
             if ingredients[num]["amount"] != masterIngredients[num]["amount"]:
 
@@ -143,12 +137,16 @@ def calculateNewMasterRecipe(recipeVariations):
                     break
 
     for instruction in range(len(sumOfInstructionVariations)):
-        masterInstructions[instruction] += sumOfInstructionVariations[instruction]/numberOfInstructionVariations[instruction]
+        if numberOfInstructionVariations[instruction]!=0:
+            masterInstructions[instruction] += sumOfInstructionVariations[instruction]/numberOfInstructionVariations[instruction]
+        else:
+            masterInstructions[instruction] += sumOfInstructionVariations[instruction]
 
     for ingredient in range(len(sumOfIngredientVariations)):
-        # print(masterIngredients[ingredient]["amount"])
-        masterIngredients[ingredient]["amount"] += sumOfIngredientVariations[ingredient]["amount"]/numberOfIngredientVariations[ingredient]
-
+        if numberOfIngredientVariations[ingredient]!=0:
+            masterIngredients[ingredient]["amount"] += sumOfIngredientVariations[ingredient]["amount"]/numberOfIngredientVariations[ingredient]
+        else:
+            masterIngredients[ingredient]["amount"] += sumOfIngredientVariations[ingredient]["amount"]
     masterRecipe["instructions"] = editInstructions(
         masterInstructions, masterRecipe["instructions"])
     masterRecipe["ingredients"] = masterIngredients
@@ -158,7 +156,7 @@ def calculateNewMasterRecipe(recipeVariations):
 
 
 def createRecipeVariations(exampleRecipe, numberOfVariations):
-    changingRange = 0.2
+    changingRange = 1
     recipeIngredients = exampleRecipe["recipe"]["ingredients"]
     recipeInstructions = getTempAndTime(
         exampleRecipe["recipe"]["instructions"])
@@ -177,12 +175,13 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
         za = random.random()
         if (za > 0.33):
             index = random.randint(0,(len(recipeIngredients))-1)
+            while( recipeIngredients[index]["unit"]=="" or recipeIngredients[index]["unit"][0]==" " ):
+                index = random.randint(0,(len(recipeIngredients))-1)
             if(index==2):
                 ratingChange = 1
         else:
             index = -1
         for ingredientIndex in range(len(recipeIngredients)):
-            #count += 1
             if (ingredientIndex == index):
                 multiple = (random.random() * changingRange + (1-(changingRange/2)))
                 amountToChange = recipeIngredients[ingredientIndex]["amount"] * multiple
@@ -210,7 +209,6 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
                     "unit":
                     recipeIngredients[ingredientIndex]["unit"]
                 })
-
         if (za <= 0.33):
             index = random.randint(0,len(recipeInstructions)-1)
         else:
@@ -228,12 +226,13 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
 
         finalObject = {}
         finalObject["recipe"] = temporaryRecipe
-        if ratingChange == 0:
-            finalObject["rating"] = 3
-        elif ratingChange==-1:
-            finalObject["rating"] = 1
-        else:
-            finalObject["rating"] = 5
+        # if ratingChange == 0:
+        #     finalObject["rating"] = 3
+        # elif ratingChange==-1:
+        #     finalObject["rating"] = 1
+        # else:
+        #     finalObject["rating"] = 5
+        finalObject["rating"] = random.randint(0,5)
 
         allVariations.append(finalObject)
 
@@ -243,46 +242,38 @@ def createRecipeVariations(exampleRecipe, numberOfVariations):
 # end createRecipeVariations
 
 if __name__ == "__main__":
-    ex = {
-        "name":
-        "Cake",
-        'notes':
-        "This recipe is very good. I make it all the time with my kids!",
-        'ingredients': [
-            {
-                "name": "Eggs",
-                "amount": 20,
-                "unit": ""
-            },
-            {
-                "name": "Flour",
-                "amount": 20,
-                "unit": "Cups"
-            },
-            {
-                "name": "Sugar",
-                "amount": 20,
-                "unit": "Cups"
-            },
-            {
-                "name": "Baking Soda",
-                "amount": 20,
-                "unit": "Teaspoons"
-            },
-        ],
-        "instructions": [
-            "Add flour.",
-            "Create well in flour.",
-            "Crack egg in well.",
-            "heat oven to 200.0 C",
-            "cook for 20.0 min",
-        ],
-    }
-    example = {"recipe": ex, "rating": 5}
-    recipeVariations = createRecipeVariations(example, 10000)
+    porkChop = {
 
-    newRecipe = calculateNewMasterRecipe(recipeVariations)
-    print(calculateNewMasterRecipe(recipeVariations))
+        "name"  :   "Pork Chop",
+            "notes" :   "Yummy yummy in my tummy",
+            "ingredients"   :  [
+                {"name" : "salt", "amount": 118, "unit": "ml"},
+                {"name" : "water", "amount": 710, "unit": "ml"},
+                {"name" : "pork chops", "amount": 2, "unit": ""},
+                {"name" : "brown sugar", "amount": 60, "unit": "ml"},
+                {"name" : "butter", "amount": 30, "unit": "ml"},
+                {"name" : "thyme", "amount": 4, "unit": " sprigs"},
+                {"name" : "garlic", "amount": 2, "unit": "cloves"},
+            ],
+            "instructions": [
+                "Tenderize porkchops with a fork",
+                "Place salt, sugar, and water in a plastic bag and stire until mixed",
+                "Put porkchops in bag, and let marinate for 30 minutes",
+                "Remove porkchops from bag and dry with paper towel",
+                "Heat pan to medium high heat",
+                "Cook on each side for 1 minute",
+                "Reduce heat to medium and continue cooking for 9 minutes, flipping the chops every minute",
+                "Remove the pan from the stove, add butter, garlic, and thyme, basting the pork chops",
+                "Let the porkchops rest in the pan for 5 minutes",
+            ],
+}
+    example = {"recipe": porkChop, "rating": 5}
+    recipeVariations = createRecipeVariations(example, 500)
+
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint(calculateNewMasterRecipe(recipeVariations))
+    #  print(calculateNewMasterRecipe(recipeVariations))
+    #changeRecipe()
 # print(recipeVariations)
 #newRecipe = calculateNewMasterRecipe(recipeVariations)
 # print(newRecipe)
