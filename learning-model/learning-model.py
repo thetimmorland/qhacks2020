@@ -16,7 +16,7 @@ def copyArrOfDict(x):
     return cpy_list
 
 
-def addRecipe():
+def changeRecipe():
     r = requests.get(BACKEND_URL + "/api/recipes")
     recipesID = r.json()
     for x in recipesID:
@@ -277,10 +277,11 @@ if __name__ == "__main__":
         ],
     }
     example = {"recipe": ex, "rating": 5}
-    recipeVariations = createRecipeVariations(example, 10)
+    recipeVariations = createRecipeVariations(example, 100)
 
-    newRecipe = calculateNewMasterRecipe(recipeVariations)
-    print(calculateNewMasterRecipe(recipeVariations))
+    # newRecipe = calculateNewMasterRecipe(recipeVariations)
+    # print(calculateNewMasterRecipe(recipeVariations))
+    changeRecipe():
 # print(recipeVariations)
 #newRecipe = calculateNewMasterRecipe(recipeVariations)
 # print(newRecipe)
